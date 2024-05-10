@@ -44,10 +44,10 @@ fun LoginScreen(
 
 
 
-    fun login() {
+    fun login(textId:String, textPw:String):Boolean {
         val id = textId
         val password = textPw
-
+        return id == "asd" && password == "1234"
 
     }
 
@@ -91,7 +91,9 @@ fun LoginScreen(
             Button(
                 modifier = Modifier.padding(10.dp),
                 onClick = {
-                    login()
+                    if(login(textId,textPw)) {
+                        onLoginSuccess(true) 
+                        navController.navigate(Routes.Map.route)}
                 }
             ) {
                 Text(text = "로그인")

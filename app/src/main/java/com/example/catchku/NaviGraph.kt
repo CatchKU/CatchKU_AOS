@@ -8,6 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.catchku.LocalNavGraphViewModelStoreOwner
 import com.example.catchku.rememberViewModelStoreOwner
+import com.example.catchku.screen.ItemScreen
+import com.example.catchku.screen.KuScreen
+import com.example.catchku.screen.MapScreen
+import com.example.catchku.screen.RankingScreen
 import com.sopt.now.compose.screen.HomeScreen
 import com.sopt.now.compose.screen.LoginScreen
 import com.example.catchku.screen.SignupScreen
@@ -15,10 +19,11 @@ import com.example.catchku.screen.SignupScreen
 sealed class Routes(val route: String) {
     data object Login : Routes("Login")
     data object SignUp : Routes("SignUp")
-
     data object Home : Routes("Home")
-
-
+    data object Ranking : Routes("Ranking")
+    data object Map : Routes("Map")
+    data object Item : Routes("Item")
+    data object Ku : Routes("Ku")
 }
 
 @Composable
@@ -45,6 +50,22 @@ fun NaviGraph(
 
             composable(route = Routes.SignUp.route) {
                 SignupScreen(navController = navController)
+            }
+
+            composable(route = Routes.Map.route) {
+                MapScreen(navController = navController)
+            }
+
+            composable(route = Routes.Item.route) {
+                ItemScreen(navController = navController)
+            }
+
+            composable(route = Routes.Ku.route) {
+                KuScreen(navController = navController)
+            }
+
+            composable(route = Routes.Ranking.route) {
+                RankingScreen(navController = navController)
             }
         }
     }
