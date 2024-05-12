@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.catchku.ui.theme.CatchKUTheme
-import com.sopt.now.compose.NaviGraph
+import com.example.catchku.NaviGraph
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

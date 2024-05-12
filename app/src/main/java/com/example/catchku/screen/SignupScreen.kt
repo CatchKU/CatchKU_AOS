@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.catchku.ui.theme.CatchKUTheme
-import com.sopt.now.compose.Routes
+import com.example.catchku.Routes
 
 
 
