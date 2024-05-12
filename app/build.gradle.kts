@@ -1,7 +1,13 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace = "com.example.catchku"
@@ -18,6 +24,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "NAVER_CLIENT_ID", localProperties["naver_client_id"] as String)
+        manifestPlaceholders["NAVER_CLIENT_ID"] = localProperties["m_client_id"] as String
     }
 
     buildTypes {
@@ -38,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -67,4 +76,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // naver map SDK
+    implementation(libs.map.sdk.v3120)
+    implementation(libs.naver.map.compose)
+    implementation(libs.play.services.location)
+    implementation(libs.naver.map.location)
 }
