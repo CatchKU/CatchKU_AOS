@@ -1,4 +1,4 @@
-package com.sopt.now.compose
+package com.example.catchku
 
 
 import androidx.compose.runtime.Composable
@@ -6,14 +6,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.catchku.LocalNavGraphViewModelStoreOwner
-import com.example.catchku.rememberViewModelStoreOwner
 import com.example.catchku.screen.ItemScreen
 import com.example.catchku.screen.KuScreen
 import com.example.catchku.screen.MapScreen
 import com.example.catchku.screen.RankingScreen
-import com.sopt.now.compose.screen.HomeScreen
-import com.sopt.now.compose.screen.LoginScreen
+import com.example.catchku.screen.HomeScreen
+import com.example.catchku.screen.LoginScreen
 import com.example.catchku.screen.SignupScreen
 
 sealed class Routes(val route: String) {

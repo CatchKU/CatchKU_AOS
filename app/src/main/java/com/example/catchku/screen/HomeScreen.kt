@@ -1,4 +1,4 @@
-package com.sopt.now.compose.screen
+package com.example.catchku.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -29,7 +29,7 @@ import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.example.catchku.ui.theme.CatchKUTheme
 
-import com.sopt.now.compose.Routes
+import com.example.catchku.Routes
 
 
 @Composable
