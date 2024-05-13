@@ -45,7 +45,15 @@ fun BottomBar(
                     },
                     selected = currentRoute == screen.route,
                     onClick = {
-                        navController.navigate(screen.route)
+                        navController.navigate(screen.route){
+                            // 이전 스택 모두 지우기 설정
+                            popUpTo(Routes.Map.route) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+
                     },
                     colors = NavigationBarItemDefaults.colors(
                         unselectedTextColor = Color.Gray, selectedTextColor = Color.White

@@ -93,7 +93,15 @@ fun LoginScreen(
                 onClick = {
                     if(login(textId,textPw)) {
                         onLoginSuccess(true) 
-                        navController.navigate(Routes.Map.route)}
+                        navController.navigate(Routes.Map.route){
+                            popUpTo(Routes.Home.route) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+
+                    }
                 }
             ) {
                 Text(text = "로그인")
