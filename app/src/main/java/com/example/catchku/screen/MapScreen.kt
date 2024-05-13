@@ -63,26 +63,37 @@ fun MapScreen(navController: NavHostController) {
             //생명과학관
             SetMarker(latitude = 37.5407426, longitude = 127.0735979)
             //동물생명과학관
+            SetMarker(latitude = 37.5403664, longitude = 127.0743614)
             //입학정보관
+            SetMarker(latitude = 37.5402342, longitude = 127.0735998)
             //산학협동관
+            SetMarker(latitude = 37.5396663, longitude = 127.0732309)
             //수의학관
+            SetMarker(latitude = 37.5390954, longitude = 127.0747386)
             //새천년관
+            SetMarker(latitude = 37.5435659, longitude = 127.0772119)
             //건축관
+            SetMarker(latitude = 37.5434839, longitude = 127.0785437)
             //해봉부동산학과
+            SetMarker(latitude = 37.5433009, longitude = 127.0782828)
             //인문학관
+            SetMarker(latitude = 37.5424065, longitude = 127.0786945)
             //학생회관
+            SetMarker(latitude = 37.5418772, longitude = 127.0782087)
             //공학관
-            SetMarker(latitude = 37.54165947462257, longitude = 127.07881987094879)
+            SetMarker(latitude = 37.541635, longitude = 127.0787904)
             //신공학관
-            SetMarker(latitude = 37.54054930197007, longitude = 127.0794689655304)
+            SetMarker(latitude = 37.5405464, longitude = 127.0794723)
             //과학관
+            SetMarker(latitude = 37.5414841, longitude = 127.0804325)
             //창의관
+            SetMarker(latitude = 37.5407625, longitude = 127.0793428)
             //KU기술혁신관
+            SetMarker(latitude = 37.5397343, longitude = 127.0772939)
             //쿨하우스
-            //건대부중
-            //건대부고
+            SetMarker(latitude = 37.5391834, longitude = 127.0780082)
             //건국대학교병원
-            SetMarker(latitude = 37.54060, longitude = 127.0717)
+            SetMarker(latitude = 37.5404895, longitude = 127.0719454)
         }
     }
 }
