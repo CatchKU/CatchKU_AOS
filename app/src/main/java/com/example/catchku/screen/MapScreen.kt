@@ -24,7 +24,8 @@ import com.naver.maps.map.overlay.OverlayImage
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun MapScreen(navController: NavHostController) {
-    Box(modifier = Modifier.fillMaxSize(),
+    Box(
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         val cameraPositionState = rememberCameraPositionState()
@@ -89,8 +90,23 @@ fun MapScreen(navController: NavHostController) {
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun SetMarker(latitude: Double, longitude: Double) {
-    Marker(
-        state = MarkerState(position = LatLng(latitude, longitude)),
-        icon = OverlayImage.fromResource(R.drawable.ku)
-    )
+    if (isVisible()) {
+        Marker(
+            //TODO: 랜덤하게 황금 쿠
+            state = MarkerState(position = LatLng(latitude, longitude)),
+            icon = OverlayImage.fromResource(R.drawable.ku)
+        )
+    } else {
+        //Timer()
+    }
+}
+
+fun isVisible(): Boolean {
+    //다른 유저가 3분이내에 해당 쿠에 접근했나?
+    if (true) {
+        return true
+    }
+    else {
+        return false
+    }
 }
