@@ -44,7 +44,8 @@ fun MapScreen(navController: NavHostController) {
                 isLocationButtonEnabled = true,
             ),
         ) {
-            DrawMarker(cameraPositionState)
+            DrawKuMarker(cameraPositionState)
+            DrawUserMarker(cameraPositionState)
         }
     }
 }
@@ -59,9 +60,21 @@ fun SetMarker(latitude: Double, longitude: Double) {
 
 }
 
+@OptIn(ExperimentalNaverMapApi::class)
+@Composable
+fun DrawUserMarker(cameraPositionState: CameraPositionState) {
+    // 사용자의 현재 위치
+    val userLocation = cameraPositionState.position.target
+    Marker(
+        state = MarkerState(position = LatLng(userLocation.latitude, userLocation.longitude)),
+        icon = OverlayImage.fromResource(R.drawable.shape_red_circle)
+    )
+
+}
+
 
 @Composable
-fun DrawMarker(cameraPositionState: CameraPositionState) {
+fun DrawKuMarker(cameraPositionState: CameraPositionState) {
     // 사용자의 현재 위치
     val userLocation = cameraPositionState.position.target
 
