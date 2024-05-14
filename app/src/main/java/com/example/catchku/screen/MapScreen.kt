@@ -1,16 +1,18 @@
 package com.example.catchku.screen
 
+import android.annotation.SuppressLint
 import android.location.Location
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
@@ -31,11 +33,13 @@ fun MapScreen(navController: NavHostController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val cameraPositionState = rememberCameraPositionState()
+        val markerState = remember {
+            mutableStateOf<LatLng?>(null)
+        }
 
         NaverMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
+            cameraPositionState = rememberCameraPositionState(),
             locationSource = rememberFusedLocationSource(),
             properties = MapProperties(
                 locationTrackingMode = LocationTrackingMode.Follow
@@ -43,9 +47,14 @@ fun MapScreen(navController: NavHostController) {
             uiSettings = MapUiSettings(
                 isLocationButtonEnabled = true,
             ),
+            onLocationChange = {location ->
+                markerState.value = LatLng(location.latitude, location.longitude)
+            },
         ) {
-            DrawKuMarker(cameraPositionState)
-            DrawUserMarker(cameraPositionState)
+            markerState.value?.let {
+                DrawKuMarker(currLocation = it)
+                DrawUserMarker(currLocation = it)
+            }
         }
     }
 }
@@ -57,16 +66,14 @@ fun SetMarker(latitude: Double, longitude: Double) {
         state = MarkerState(position = LatLng(latitude, longitude)),
         icon = OverlayImage.fromResource(R.drawable.ku)
     )
-
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun DrawUserMarker(cameraPositionState: CameraPositionState) {
+fun DrawUserMarker(currLocation: LatLng) {
     // 사용자의 현재 위치
-    val userLocation = cameraPositionState.position.target
     Marker(
-        state = MarkerState(position = LatLng(userLocation.latitude, userLocation.longitude)),
+        state = MarkerState(position = currLocation),
         icon = OverlayImage.fromResource(R.drawable.shape_red_circle)
     )
 
@@ -74,9 +81,9 @@ fun DrawUserMarker(cameraPositionState: CameraPositionState) {
 
 
 @Composable
-fun DrawKuMarker(cameraPositionState: CameraPositionState) {
+fun DrawKuMarker(currLocation: LatLng) {
     // 사용자의 현재 위치
-    val userLocation = cameraPositionState.position.target
+    val userLocation = currLocation
 
     val markerLocations = listOf(
         LatLng(37.5431505, 127.0751552), // 행정관
