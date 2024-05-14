@@ -21,7 +21,6 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
-import androidx.compose.runtime.*
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
@@ -53,25 +52,19 @@ fun MapScreen(navController: NavHostController) {
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun SetMarker(latitude: Double, longitude: Double) {
-    val isVisible = remember(latitude, longitude) {
-        isVisible(latitude, longitude)
-    }
+    Marker(
+        state = MarkerState(position = LatLng(latitude, longitude)),
+        icon = OverlayImage.fromResource(R.drawable.ku)
+    )
 
-    if (isVisible) {
-        Marker(
-            state = MarkerState(position = LatLng(latitude, longitude)),
-            icon = OverlayImage.fromResource(R.drawable.ku)
-        )
-    }
 }
 
-// 건국대학교의 주요 장소들에 대한 마커를 추가합니다.
+
 @Composable
 fun DrawMarker(cameraPositionState: CameraPositionState) {
     // 사용자의 현재 위치
     val userLocation = cameraPositionState.position.target
 
-    // 건국대학교의 주요 장소들의 위치를 정의합니다.
     val markerLocations = listOf(
         LatLng(37.5431505, 127.0751552), // 행정관
         LatLng(37.5442615, 127.0760717), // 경영관
@@ -102,7 +95,7 @@ fun DrawMarker(cameraPositionState: CameraPositionState) {
         LatLng(37.5404895, 127.0719454)  // 건국대학교병원
     )
 
-    // 각 장소의 위치와 사용자의 위치 간의 거리를 계산하여 일정 거리 이내에 있는 경우에만 마커를 표시합니다.
+    // 사용자 반경 내 쿠만 표시
     markerLocations.forEach { location ->
         val distance = calculateDistance(location, userLocation)
         if (distance <= MAX_DISTANCE_THRESHOLD) {
@@ -111,7 +104,7 @@ fun DrawMarker(cameraPositionState: CameraPositionState) {
     }
 }
 
-// 두 위치 간의 거리를 계산합니다.
+// 두 위치 간의 거리를 계산
 fun calculateDistance(location1: LatLng, location2: LatLng): Float {
     val results = FloatArray(1)
     Location.distanceBetween(
@@ -122,12 +115,6 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
     return results[0]
 }
 
-// 해당 위치에 마커를 표시할지 여부를 결정합니다.
-fun isVisible(latitude: Double, longitude: Double): Boolean {
-    // 사용자와의 거리를 계산합니다
-    // 여기에 사용자와의 거리를 계산하는 로직을 구현할 수 있습니다.
-    return true // 임시로 모든 위치에 마커를 표시합니다.
-}
 
-// 마커를 표시할 최대 거리를 설정합니다.
-private const val MAX_DISTANCE_THRESHOLD = 150f // 100미터로 설정하겠습니다. 필요에 따라 조절하세요.
+
+private const val MAX_DISTANCE_THRESHOLD = 150f // 사용자 반경
