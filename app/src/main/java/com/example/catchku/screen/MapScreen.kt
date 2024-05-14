@@ -1,19 +1,14 @@
 package com.example.catchku.screen
 
-import android.annotation.SuppressLint
-import android.location.LocationListener
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
-import com.naver.maps.map.compose.LocationOverlay
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
 import com.naver.maps.map.compose.MapUiSettings
@@ -44,8 +39,9 @@ fun MapScreen(navController: NavHostController) {
             uiSettings = MapUiSettings(
                 isLocationButtonEnabled = true,
             ),
-        )
-        DrawMarker()
+        ) {
+            DrawMarker()
+        }
     }
 }
 
