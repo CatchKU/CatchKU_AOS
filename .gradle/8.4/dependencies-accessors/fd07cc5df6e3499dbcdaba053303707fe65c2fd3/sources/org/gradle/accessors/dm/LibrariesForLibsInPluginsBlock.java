@@ -709,7 +709,7 @@ public class LibrariesForLibsInPluginsBlock extends AbstractExternalDependencyFa
             public Provider<String> getLifecycleRuntimeKtx() { return getVersion("lifecycleRuntimeKtx"); }
 
             /**
-             * Returns the version associated to this alias: mapSdk (3.12.0)
+             * Returns the version associated to this alias: mapSdk (3.18.0)
              * If the version is a rich version and that its not expressible as a
              * single version string, then an empty string is returned.
              * This version was declared in catalog libs.versions.toml
@@ -733,7 +733,7 @@ public class LibrariesForLibsInPluginsBlock extends AbstractExternalDependencyFa
             public Provider<String> getNaverMapLocation() { return getVersion("naverMapLocation"); }
 
             /**
-             * Returns the version associated to this alias: naverMapSdk (3.16.2)
+             * Returns the version associated to this alias: naverMapSdk (3.18.0)
              * If the version is a rich version and that its not expressible as a
              * single version string, then an empty string is returned.
              * This version was declared in catalog libs.versions.toml

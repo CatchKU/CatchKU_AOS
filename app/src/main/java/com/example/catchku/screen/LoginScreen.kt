@@ -34,7 +34,7 @@ import com.example.catchku.Routes
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    onLoginSuccess: (Boolean) -> Unit
+    bottomBarVisible: (Boolean) -> Unit
 ) {
 
     var textId by remember { mutableStateOf("") }
@@ -92,8 +92,10 @@ fun LoginScreen(
                 modifier = Modifier.padding(10.dp),
                 onClick = {
                     if(login(textId,textPw)) {
-                        onLoginSuccess(true) 
-                        navController.navigate(Routes.Map.route)}
+                        bottomBarVisible(true)
+                        navController.navigate(Routes.Map.route){
+                            popUpTo(Routes.Home.route)
+                        }}
                 }
             ) {
                 Text(text = "로그인")

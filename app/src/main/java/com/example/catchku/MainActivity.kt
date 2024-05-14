@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     bottomBar = {
                         if (bottomBarVisible) {
-                            BottomBar(navController = navController, visible = true)
+                            BottomBar(navController = navController, bottomBarVisible = true)
                         }
                     }
                 ) { innerPadding ->

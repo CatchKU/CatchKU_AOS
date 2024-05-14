@@ -26,7 +26,7 @@ sealed class Routes(val route: String) {
 
 @Composable
 fun NaviGraph(
-    navController: NavHostController, onLoginSuccess: (Boolean) -> Unit
+    navController: NavHostController, bottomBarVisible: (Boolean) -> Unit
 ) {
     val navStoreOwner = rememberViewModelStoreOwner()
     CompositionLocalProvider(
@@ -36,34 +36,35 @@ fun NaviGraph(
 
             composable(route = Routes.Home.route) {
                 HomeScreen(navController = navController)
+                bottomBarVisible(false)
             }
 
             composable(
                 route = Routes.Login.route,
             ) {
                 LoginScreen(
-                    navController = navController, onLoginSuccess = onLoginSuccess
+                    navController = navController, bottomBarVisible = bottomBarVisible
                 )
             }
 
             composable(route = Routes.SignUp.route) {
-                SignupScreen(navController = navController)
+                SignupScreen(navController)
             }
 
             composable(route = Routes.Map.route) {
-                MapScreen(navController = navController)
+                MapScreen(navController)
             }
 
             composable(route = Routes.Item.route) {
-                ItemScreen(navController = navController)
+                ItemScreen(navController)
             }
 
             composable(route = Routes.Ku.route) {
-                KuScreen(navController = navController)
+                KuScreen(navController)
             }
 
             composable(route = Routes.Ranking.route) {
-                RankingScreen(navController = navController)
+                RankingScreen(navController)
             }
         }
     }
