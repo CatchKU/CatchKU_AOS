@@ -82,4 +82,8 @@ dependencies {
     implementation(libs.naver.map.compose)
     implementation(libs.play.services.location)
     implementation(libs.naver.map.location)
+
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.maps.android:maps-compose:2.9.0")
 }
