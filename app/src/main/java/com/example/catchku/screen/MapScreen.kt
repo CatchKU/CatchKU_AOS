@@ -1,9 +1,12 @@
 package com.example.catchku.screen
 
+import android.annotation.SuppressLint
 import android.location.Location
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,11 +39,13 @@ fun MapScreen(navController: NavHostController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val cameraPositionState = rememberCameraPositionState()
+        val markerState = remember {
+            mutableStateOf<LatLng?>(null)
+        }
 
         NaverMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
+            cameraPositionState = rememberCameraPositionState(),
             locationSource = rememberFusedLocationSource(),
             properties = MapProperties(
                 locationTrackingMode = LocationTrackingMode.Follow
@@ -48,8 +53,12 @@ fun MapScreen(navController: NavHostController) {
             uiSettings = MapUiSettings(
                 isLocationButtonEnabled = true,
             ),
+            onLocationChange = {location ->
+                markerState.value = LatLng(location.latitude, location.longitude)
+            },
 
         ) {
+            markerState.value?.let { DrawMarker(currLocation = it) }
 
             DrawKuMarker(cameraPositionState)
             DrawUserMarker(cameraPositionState)
@@ -64,7 +73,6 @@ fun SetMarker(latitude: Double, longitude: Double) {
         state = MarkerState(position = LatLng(latitude, longitude)),
         icon = OverlayImage.fromResource(R.drawable.ku)
     )
-
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -82,9 +90,10 @@ fun DrawUserMarker(cameraPositionState: CameraPositionState) {
 
 
 @Composable
+fun DrawMarker(currLocation: LatLng) {
 fun DrawKuMarker(cameraPositionState: CameraPositionState) {
     // 사용자의 현재 위치
-    val userLocation = cameraPositionState.position.target
+    val userLocation = currLocation
 
     val markerLocations = listOf(
         LatLng(37.5431505, 127.0751552), // 행정관
