@@ -50,8 +50,7 @@ fun Ku_Card(item: Item) {
             contentDescription = null,
             modifier = Modifier
                 .padding(bottom = 8.dp)
-                .size(128.dp),
-            contentScale = ContentScale.Crop
+                .size(128.dp)
         )
         Text(
             text = item.text,
@@ -67,7 +66,7 @@ fun LazyGrid_Ku(items: List<Item>) {
         contentPadding = PaddingValues(20.dp)
     ) {
         items(items) { item ->
-            ItemCard(item = item)
+            Ku_Card(item = item)
         }
     }
 }
