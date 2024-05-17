@@ -60,8 +60,6 @@ fun MapScreen(navController: NavHostController) {
         ) {
             markerState.value?.let { DrawMarker(currLocation = it) }
 
-            DrawKuMarker(cameraPositionState)
-            DrawUserMarker(cameraPositionState)
         }
     }
 }
@@ -91,7 +89,6 @@ fun DrawUserMarker(cameraPositionState: CameraPositionState) {
 
 @Composable
 fun DrawMarker(currLocation: LatLng) {
-fun DrawKuMarker(cameraPositionState: CameraPositionState) {
     // 사용자의 현재 위치
     val userLocation = currLocation
 
