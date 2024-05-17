@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,19 +48,21 @@ fun ItemScreen(navController: NavHostController) {
 @Composable
 fun ItemCard(item: Item) {
     Row(
-        modifier = Modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
     ) {
         Image(
             painter = item.image,
             contentDescription = null,
             modifier = Modifier
-                .padding(bottom = 8.dp)
+                .padding(end = 20.dp)
                 .size(128.dp)
         )
         Column {
             Text(
                 text = item.itemName,
+                modifier = Modifier.padding(top = 10.dp),
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -66,11 +71,11 @@ fun ItemCard(item: Item) {
             Text(
                 text = item.itemDescription,
                 style = androidx.compose.ui.text.TextStyle(
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    fontSize = 15.sp
                 ),
+                color = Color(0xFFB5B6B7)
 
-                )
+            )
         }
     }
 }
@@ -78,7 +83,7 @@ fun ItemCard(item: Item) {
 @Composable
 fun Lazy_Item(items: List<Item>) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
-        items(items) { item ->
+        items(items = items) { item ->
             ItemCard(item = item)
         }
     }
@@ -101,4 +106,10 @@ private fun init_item_data(): List<Item> {
 private fun ItemScreenPreview() {
     var navController = rememberNavController()
     ItemScreen(navController = navController)
+}
+
+@Preview
+@Composable
+private fun ItemCard() {
+    ItemCard(item = Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?"))
 }
