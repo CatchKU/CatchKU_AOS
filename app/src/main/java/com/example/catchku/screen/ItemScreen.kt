@@ -92,11 +92,10 @@ fun Lazy_Item(items: List<Item>) {
 @Composable
 private fun init_item_data(): List<Item> {
     val items = listOf(
-        Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?"),
-        Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?"),
-        Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?"),
-        Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?"),
-        Item(painterResource(id = R.drawable.computer_ku), "쿠", "공대생 쿠?")
+        Item(painterResource(id = R.drawable.proto1), "최강 다이아몬드", "매우 반짝입니다!"),
+        Item(painterResource(id = R.drawable.proto2), "마법의 모자", "신비로운 모자.쓰면 무슨일이 일어날지도..?"),
+        Item(painterResource(id = R.drawable.proto3), "마법의 물약", "의심스러운 물약. 마시면 좋은 일이 일어날 것 같다."),
+        Item(painterResource(id = R.drawable.proto4), "지옥의 용광로", "무언가를 넣으면 새로운게 나올 것 같다.."),
     )
     return items
 }
