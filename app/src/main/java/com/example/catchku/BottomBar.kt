@@ -72,12 +72,12 @@ sealed class BottomNavItem(
     object Ranking : BottomNavItem(
         route = Routes.Ranking.route,
         title = "Ranking",
-        icon = R.drawable.baseline_123_24
+        icon = R.drawable.ic_navibar_ranking_2_24
     )
 
     object Item : BottomNavItem(
         route = Routes.Item.route,
         title = "Item",
-        icon = R.drawable.baseline_backpack_24
+        icon = R.drawable.ic_navibar_bag_1_24
     )
 }
