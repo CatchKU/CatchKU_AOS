@@ -76,7 +76,6 @@ fun DrawUserMarker(currLocation: LatLng) {
         state = MarkerState(position = currLocation),
         icon = OverlayImage.fromResource(R.drawable.shape_red_circle)
     )
-
 }
 
 
