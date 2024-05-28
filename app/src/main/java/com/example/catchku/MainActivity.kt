@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 var bottomBarVisible by remember { mutableStateOf(false) }
 
+
                 Scaffold(
                     bottomBar = {
                         if (bottomBarVisible) {
