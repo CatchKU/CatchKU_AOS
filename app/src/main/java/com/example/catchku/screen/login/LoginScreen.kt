@@ -46,7 +46,6 @@ fun LoginScreen(
 
     var textId by remember { mutableStateOf("") }
     var textPw by remember { mutableStateOf("") }
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner
     val uiState by loginViewModel.postLoginUserState
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
