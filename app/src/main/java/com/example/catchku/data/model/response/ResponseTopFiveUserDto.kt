@@ -1,4 +1,4 @@
-package com.example.catchku.response
+package com.example.catchku.data.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
