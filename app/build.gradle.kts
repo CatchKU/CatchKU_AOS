@@ -112,4 +112,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.3.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    //Timber
+    implementation("com.jakewharton.timber:timber:4.7.1")
 }
