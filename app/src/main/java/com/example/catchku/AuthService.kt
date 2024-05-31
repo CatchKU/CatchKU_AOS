@@ -19,6 +19,6 @@ interface AuthService {
     ): Call<ResponseRegisterDto>
 
     @DELETE("item/delete")
-    fun login(@Body request: RequestItemDeleteDto): Call<ResponseDto>
+    fun itemDelete(@Body request: RequestItemDeleteDto): Call<ResponseDto>
 
 }
