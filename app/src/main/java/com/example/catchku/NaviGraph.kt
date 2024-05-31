@@ -11,9 +11,10 @@ import com.example.catchku.screen.KuScreen
 import com.example.catchku.screen.MapScreen
 import com.example.catchku.screen.RankingScreen
 import com.example.catchku.screen.HomeScreen
-import com.example.catchku.screen.LoginScreen
-import com.example.catchku.screen.SignupScreen
-import com.example.catchku.screen.SignupViewModel
+import com.example.catchku.screen.login.LoginScreen
+import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.signup.SignupScreen
+import com.example.catchku.screen.signup.SignupViewModel
 
 sealed class Routes(val route: String) {
     data object Login : Routes("Login")
@@ -28,6 +29,7 @@ sealed class Routes(val route: String) {
 @Composable
 fun NaviGraph(
     signupViewModel: SignupViewModel,
+    loginViewModel: LoginViewModel,
     navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit
 ) {
@@ -46,7 +48,7 @@ fun NaviGraph(
                 route = Routes.Login.route,
             ) {
                 LoginScreen(
-                    navController = navController, bottomBarVisible = bottomBarVisible
+                    navController = navController, bottomBarVisible = bottomBarVisible, loginViewModel
                 )
             }
 
