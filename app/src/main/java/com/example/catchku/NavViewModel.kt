@@ -20,7 +20,7 @@ val LocalNavGraphViewModelStoreOwner = staticCompositionLocalOf<ViewModelStoreOw
     error("Undefined")
 }
 
-//class NavViewModel : ViewModel() {
-//    var memberId by mutableIntStateOf(-1)
-//}
+class NavViewModel : ViewModel() {
+    var memberId by mutableIntStateOf(-1)
+}
 
