@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.Routes
@@ -28,7 +29,10 @@ import com.example.catchku.Routes
 
 
 @Composable
-fun SignupScreen(navController: NavController) {
+fun SignupScreen(
+    navController: NavController,
+    signupViewModel: SignupViewModel
+) {
     var textStudentNum by remember { mutableStateOf("") }
     var textPassword by remember { mutableStateOf("") }
     var textPasswordCheck by remember { mutableStateOf("") }
@@ -37,13 +41,11 @@ fun SignupScreen(navController: NavController) {
 
     fun signUp(textStudentNum : String, textPassword:String, textPasswordCheck:String) {
         if (isValidStudentNumber(textStudentNum) && isValidPassword(textPassword) && passwordCheck(textPasswordCheck)){
+            signupViewModel.postRegisterUser()
             Toast.makeText(context, "회원가입 성공", Toast.LENGTH_SHORT).show()
             navController.navigate(Routes.Login.route)
         }
     }
-
-
-
 
     CatchKUTheme {
         Column(

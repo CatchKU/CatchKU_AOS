@@ -13,6 +13,7 @@ import com.example.catchku.screen.RankingScreen
 import com.example.catchku.screen.HomeScreen
 import com.example.catchku.screen.LoginScreen
 import com.example.catchku.screen.SignupScreen
+import com.example.catchku.screen.SignupViewModel
 
 sealed class Routes(val route: String) {
     data object Login : Routes("Login")
@@ -26,7 +27,9 @@ sealed class Routes(val route: String) {
 
 @Composable
 fun NaviGraph(
-    navController: NavHostController, bottomBarVisible: (Boolean) -> Unit
+    signupViewModel: SignupViewModel,
+    navController: NavHostController,
+    bottomBarVisible: (Boolean) -> Unit
 ) {
     val navStoreOwner = rememberViewModelStoreOwner()
     CompositionLocalProvider(
@@ -48,7 +51,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.SignUp.route) {
-                SignupScreen(navController)
+                SignupScreen(navController, signupViewModel)
             }
 
             composable(route = Routes.Map.route) {
