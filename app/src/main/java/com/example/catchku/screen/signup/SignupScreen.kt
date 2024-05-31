@@ -1,4 +1,4 @@
-package com.example.catchku.screen
+package com.example.catchku.screen.signup
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.Routes
