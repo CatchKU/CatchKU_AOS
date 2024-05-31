@@ -86,4 +86,17 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.maps.android:maps-compose:2.9.0")
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+
+
+// define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+
+// define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
 }

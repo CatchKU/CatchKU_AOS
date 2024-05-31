@@ -9,17 +9,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.geometry.LatLngBounds
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.compose.CameraPositionState
-import com.naver.maps.map.compose.CircleOverlay
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
-import com.naver.maps.map.compose.GroundOverlay
 import com.naver.maps.map.compose.LocationTrackingMode
 import com.naver.maps.map.compose.MapProperties
 import com.naver.maps.map.compose.MapUiSettings
@@ -56,10 +50,11 @@ fun MapScreen(navController: NavHostController) {
             onLocationChange = {location ->
                 markerState.value = LatLng(location.latitude, location.longitude)
             },
-
         ) {
-            markerState.value?.let { DrawMarker(currLocation = it) }
-
+            markerState.value?.let {
+                DrawKuMarker(currLocation = it)
+                DrawUserMarker(currLocation = it)
+            }
         }
     }
 }
@@ -75,20 +70,17 @@ fun SetMarker(latitude: Double, longitude: Double) {
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun DrawUserMarker(cameraPositionState: CameraPositionState) {
+fun DrawUserMarker(currLocation: LatLng) {
     // 사용자의 현재 위치
-    val userLocation = cameraPositionState.position.target
-//    Marker(
-//        state = MarkerState(position = LatLng(userLocation.latitude, userLocation.longitude)),
-//        icon = OverlayImage.fromResource(R.drawable.shape_red_circle)
-//    )
+    Marker(
+        state = MarkerState(position = currLocation),
+        icon = OverlayImage.fromResource(R.drawable.shape_red_circle)
+    )
 }
 
 
-
-
 @Composable
-fun DrawMarker(currLocation: LatLng) {
+fun DrawKuMarker(currLocation: LatLng) {
     // 사용자의 현재 위치
     val userLocation = currLocation
 
@@ -122,8 +114,6 @@ fun DrawMarker(currLocation: LatLng) {
         LatLng(37.5404895, 127.0719454)  // 건국대학교병원
     )
 
-
-    CircleOverlay(center = LatLng(userLocation.latitude,userLocation.longitude), Color.Red.copy(alpha = 0.3F), 150.0)
     // 사용자 반경 내 쿠만 표시
     markerLocations.forEach { location ->
         val distance = calculateDistance(location, userLocation)
@@ -131,7 +121,6 @@ fun DrawMarker(currLocation: LatLng) {
             SetMarker(location.latitude, location.longitude)
         }
     }
-
 }
 
 // 두 위치 간의 거리를 계산
