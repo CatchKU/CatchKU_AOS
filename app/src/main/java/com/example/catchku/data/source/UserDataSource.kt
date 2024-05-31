@@ -1,5 +1,6 @@
 package com.example.catchku.data.source
 
+import com.example.catchku.data.model.request.RequestUserLoginDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.service.AuthService
 import javax.inject.Inject
@@ -9,4 +10,7 @@ class UserDataSource @Inject constructor(
 ) {
     suspend fun postRegisterUser(requestUserRegisterDto: RequestUserRegisterDto) =
         authService.register(requestUserRegisterDto)
+
+    suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto) =
+        authService.login(requestUserLoginDto)
 }

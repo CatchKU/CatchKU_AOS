@@ -4,6 +4,7 @@ import com.example.catchku.data.model.request.RequestItemCreateDto
 import com.example.catchku.data.model.request.RequestItemDeleteDto
 import com.example.catchku.data.model.request.RequestKuCreateDto
 import com.example.catchku.data.model.request.RequestKuDeleteDto
+import com.example.catchku.data.model.request.RequestUserLoginDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseItemCreateDto
@@ -44,5 +45,10 @@ interface AuthService {
     suspend fun register(
         @Body request: RequestUserRegisterDto,
     ): ResponseRegisterDto
+
+    @POST("user/login")
+    suspend fun login(
+        @Body request: RequestUserLoginDto
+    )
 
 }
