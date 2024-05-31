@@ -1,4 +1,4 @@
-package com.example.catchku.screen
+package com.example.catchku.screen.ku
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
