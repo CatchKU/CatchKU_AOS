@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel, navController) { visible ->
+                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel, applicationContext, navController) { visible ->
                             bottomBarVisible = visible
                         }
                     }

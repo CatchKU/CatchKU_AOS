@@ -12,6 +12,7 @@ import com.example.catchku.data.model.response.ResponseKuCreateDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
+import com.example.catchku.data.model.response.ResponseUserLoginDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -50,6 +51,6 @@ interface AuthService {
     @POST("user/login")
     suspend fun login(
         @Body request: RequestUserLoginDto
-    )
+    ): ResponseUserLoginDto
 
 }
