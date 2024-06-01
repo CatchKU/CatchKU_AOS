@@ -10,6 +10,7 @@ import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseItemCreateDto
 import com.example.catchku.data.model.response.ResponseKuCreateDto
+import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
@@ -19,6 +20,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthService {
     @POST("ku/create")
@@ -39,6 +41,9 @@ interface AuthService {
 
     @POST("item/create")
     fun itemCreate(@Body request: RequestItemCreateDto): Call<ResponseItemCreateDto>
+
+    @GET("user/ku-list/{userId}")
+    suspend fun getKuList(@Path("userId") userId : Int) : ResponseKuListDto
 
     @DELETE("item/delete")
     fun itemDelete(@Body request: RequestItemDeleteDto): Call<ResponseDto>

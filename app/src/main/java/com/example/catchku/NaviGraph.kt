@@ -11,6 +11,7 @@ import com.example.catchku.screen.ku.KuScreen
 import com.example.catchku.screen.map.MapScreen
 import com.example.catchku.screen.ranking.RankingScreen
 import com.example.catchku.screen.HomeScreen
+import com.example.catchku.screen.ku.KuViewModel
 import com.example.catchku.screen.login.LoginScreen
 import com.example.catchku.screen.login.LoginViewModel
 import com.example.catchku.screen.map.MapViewModel
@@ -34,6 +35,7 @@ fun NaviGraph(
     loginViewModel: LoginViewModel,
     rankingViewModel: RankingViewModel,
     mapViewModel: MapViewModel,
+    kuViewModel: KuViewModel,
     navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit
 ) {
@@ -69,7 +71,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Ku.route) {
-                KuScreen(navController)
+                KuScreen(navController, kuViewModel)
             }
 
             composable(route = Routes.Ranking.route) {
