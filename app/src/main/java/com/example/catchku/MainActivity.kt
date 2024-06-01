@@ -3,6 +3,7 @@ package com.example.catchku
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,8 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.catchku.ui.theme.CatchKUTheme
-import com.example.catchku.NaviGraph
+import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.ranking.RankingViewModel
+import com.example.catchku.screen.signup.SignupViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +29,9 @@ class MainActivity : ComponentActivity() {
             CatchKUTheme {
                 val navController = rememberNavController()
                 var bottomBarVisible by remember { mutableStateOf(false) }
+                val signupViewModel by viewModels<SignupViewModel>()
+                val loginViewModel by viewModels<LoginViewModel>()
+                val rankingViewModel by viewModels<RankingViewModel>()
 
 
                 Scaffold(
@@ -38,7 +46,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        NaviGraph(navController) { visible ->
+                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel, navController) { visible ->
                             bottomBarVisible = visible
                         }
                     }

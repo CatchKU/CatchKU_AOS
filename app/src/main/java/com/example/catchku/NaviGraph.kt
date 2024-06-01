@@ -7,12 +7,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.catchku.screen.ItemScreen
-import com.example.catchku.screen.KuScreen
+import com.example.catchku.screen.ku.KuScreen
 import com.example.catchku.screen.MapScreen
-import com.example.catchku.screen.RankingScreen
+import com.example.catchku.screen.ranking.RankingScreen
 import com.example.catchku.screen.HomeScreen
-import com.example.catchku.screen.LoginScreen
-import com.example.catchku.screen.SignupScreen
+import com.example.catchku.screen.login.LoginScreen
+import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.ranking.RankingViewModel
+import com.example.catchku.screen.signup.SignupScreen
+import com.example.catchku.screen.signup.SignupViewModel
 
 sealed class Routes(val route: String) {
     data object Login : Routes("Login")
@@ -26,7 +29,11 @@ sealed class Routes(val route: String) {
 
 @Composable
 fun NaviGraph(
-    navController: NavHostController, bottomBarVisible: (Boolean) -> Unit
+    signupViewModel: SignupViewModel,
+    loginViewModel: LoginViewModel,
+    rankingViewModel: RankingViewModel,
+    navController: NavHostController,
+    bottomBarVisible: (Boolean) -> Unit
 ) {
     val navStoreOwner = rememberViewModelStoreOwner()
     CompositionLocalProvider(
@@ -43,12 +50,12 @@ fun NaviGraph(
                 route = Routes.Login.route,
             ) {
                 LoginScreen(
-                    navController = navController, bottomBarVisible = bottomBarVisible
+                    navController = navController, bottomBarVisible = bottomBarVisible, loginViewModel
                 )
             }
 
             composable(route = Routes.SignUp.route) {
-                SignupScreen(navController)
+                SignupScreen(navController, signupViewModel)
             }
 
             composable(route = Routes.Map.route) {
@@ -64,7 +71,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Ranking.route) {
-                RankingScreen(navController)
+                RankingScreen(navController, rankingViewModel)
             }
         }
     }

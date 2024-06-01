@@ -1,19 +1,19 @@
-package com.example.catchku.response
+package com.example.catchku.data.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ItemInfo(
-    @SerialName("itemName") val itemName: String,
-    @SerialName("itemValue") val itemValue: Int,
+data class KuInfo(
+    @SerialName("name") val name: String,
+    @SerialName("score") val score: Int,
 )
 @Serializable
-data class ResponseItemCreateDto(
+data class ResponseKuCreateDto(
     @SerialName("code")
     val code: Int,
     @SerialName("message")
     val message: String,
     @SerialName("data")
-    val data: ItemInfo,
+    val data: KuInfo,
 )
