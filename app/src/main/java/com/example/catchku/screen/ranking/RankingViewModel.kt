@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.model.response.ResponseTopFiveUserDto
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,11 @@ class RankingViewModel @Inject constructor(
     val getTopFiveDepartmentState: StateFlow<UiState<ResponseTopFiveDepartmentDto>> =
         _getTopFiveDepartmentState.asStateFlow()
 
+    private val _getTopFiveUserState =
+        MutableStateFlow<UiState<ResponseTopFiveUserDto>>(UiState.Loading)
+    val getTopFiveUserState: StateFlow<UiState<ResponseTopFiveUserDto>> =
+        _getTopFiveUserState.asStateFlow()
+
     fun getTopFiveDepartment() {
         viewModelScope.launch {
             userRepository.getTopFiveDepartment()
@@ -37,6 +43,22 @@ class RankingViewModel @Inject constructor(
                         Timber.e("HTTP 실패: $errorResponse")
                     }
                     _getTopFiveDepartmentState.value = UiState.Failure("${t.message}")
+                }
+        }
+    }
+
+    fun getTopFiveUser() {
+        viewModelScope.launch {
+            userRepository.getTopFiveUser()
+                .onSuccess { response ->
+                    _getTopFiveUserState.value = UiState.Success(response)
+                    Timber.e("성공 $response")
+                }.onFailure { t ->
+                    if (t is HttpException) {
+                        val errorResponse = t.response()?.errorBody()?.string()
+                        Timber.e("HTTP 실패: $errorResponse")
+                    }
+                    _getTopFiveUserState.value = UiState.Failure("${t.message}")
                 }
         }
     }

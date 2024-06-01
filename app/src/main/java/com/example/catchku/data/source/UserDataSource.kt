@@ -12,6 +12,9 @@ class UserDataSource @Inject constructor(
     suspend fun getKUTopFiveDepartment() =
         authService.topFiveDepartment()
 
+    suspend fun getTopFiveUser() =
+        authService.topFiveUser()
+
     suspend fun postRegisterUser(requestUserRegisterDto: RequestUserRegisterDto) =
         authService.register(requestUserRegisterDto)
 
