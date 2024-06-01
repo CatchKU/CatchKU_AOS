@@ -2,6 +2,7 @@ package com.example.catchku.data.service
 
 import com.example.catchku.data.model.request.RequestItemCreateDto
 import com.example.catchku.data.model.request.RequestItemDeleteDto
+import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestKuCreateDto
 import com.example.catchku.data.model.request.RequestKuDeleteDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
@@ -51,5 +52,10 @@ interface AuthService {
     suspend fun login(
         @Body request: RequestUserLoginDto
     )
+
+    @POST("user/catch-ku")
+    suspend fun kuCatch(
+        @Body request: RequestKuCatchDto
+    ): ResponseDto
 
 }
