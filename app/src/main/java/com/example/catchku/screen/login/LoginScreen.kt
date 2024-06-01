@@ -1,7 +1,5 @@
 package com.example.catchku.screen.login
 
-
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +33,6 @@ import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.Routes
 import com.example.catchku.util.UiState
 
-
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun LoginScreen(
@@ -43,7 +40,6 @@ fun LoginScreen(
     bottomBarVisible: (Boolean) -> Unit,
     loginViewModel: LoginViewModel
 ) {
-
     var textId by remember { mutableStateOf("") }
     var textPw by remember { mutableStateOf("") }
     val lifecycleOwner = LocalLifecycleOwner
