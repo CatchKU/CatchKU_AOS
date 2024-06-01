@@ -8,11 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.catchku.screen.ItemScreen
 import com.example.catchku.screen.ku.KuScreen
-import com.example.catchku.screen.MapScreen
+import com.example.catchku.screen.map.MapScreen
 import com.example.catchku.screen.ranking.RankingScreen
 import com.example.catchku.screen.HomeScreen
 import com.example.catchku.screen.login.LoginScreen
 import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.map.MapViewModel
 import com.example.catchku.screen.ranking.RankingViewModel
 import com.example.catchku.screen.signup.SignupScreen
 import com.example.catchku.screen.signup.SignupViewModel
@@ -32,6 +33,7 @@ fun NaviGraph(
     signupViewModel: SignupViewModel,
     loginViewModel: LoginViewModel,
     rankingViewModel: RankingViewModel,
+    mapViewModel: MapViewModel,
     navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit
 ) {
@@ -59,7 +61,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Map.route) {
-                MapScreen(navController)
+                MapScreen(navController,mapViewModel)
             }
 
             composable(route = Routes.Item.route) {

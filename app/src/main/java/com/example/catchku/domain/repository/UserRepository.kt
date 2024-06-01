@@ -14,5 +14,5 @@ interface UserRepository {
 
     suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<Unit>
 
-    suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto) : Result<ResponseDto>
+    suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto) : Result<Unit>
 }

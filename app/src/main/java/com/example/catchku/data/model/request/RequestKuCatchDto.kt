@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class RequestKuCatchDto(
     @SerialName("userId")
     val userId: Int,
-    @SerialName("KuName")
-    val kuName: String,
+    @SerialName("kuName")
+    val kuName: String
 )

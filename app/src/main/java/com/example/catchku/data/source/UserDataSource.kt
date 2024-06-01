@@ -19,6 +19,6 @@ class UserDataSource @Inject constructor(
     suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto) =
         authService.login(requestUserLoginDto)
 
-    suspend fun  postKUCatch(requestKuCatchDto: RequestKuCatchDto) =
+    suspend fun postKUCatch(requestKuCatchDto: RequestKuCatchDto) =
         authService.kuCatch(requestKuCatchDto)
 }

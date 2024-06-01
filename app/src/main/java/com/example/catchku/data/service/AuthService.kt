@@ -56,6 +56,6 @@ interface AuthService {
     @POST("user/catch-ku")
     suspend fun kuCatch(
         @Body request: RequestKuCatchDto
-    ): ResponseDto
+    )
 
 }

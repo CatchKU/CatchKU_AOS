@@ -28,7 +28,7 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.postLoginUser(requestUserLoginDto)
         }
 
-    override suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<ResponseDto> =
+    override suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit> =
        runCatching {
            userDataSource.postKUCatch(requestKuCatchDto)
        }

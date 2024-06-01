@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.map.MapViewModel
 import com.example.catchku.screen.ranking.RankingViewModel
 import com.example.catchku.screen.signup.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
                 val signupViewModel by viewModels<SignupViewModel>()
                 val loginViewModel by viewModels<LoginViewModel>()
                 val rankingViewModel by viewModels<RankingViewModel>()
+                val mapViewModel by viewModels<MapViewModel>()
 
 
                 Scaffold(
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel, navController) { visible ->
+                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel,mapViewModel,navController) { visible ->
                             bottomBarVisible = visible
                         }
                     }
