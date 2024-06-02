@@ -1,7 +1,9 @@
 package com.example.catchku.data.repository
 
+import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
+import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
@@ -11,12 +13,17 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
-): UserRepository {
+) : UserRepository {
     override suspend fun getTopFiveDepartment(): Result<ResponseTopFiveDepartmentDto> =
         runCatching {
             userDataSource.getKUTopFiveDepartment()
         }
 
+    override suspend fun getKuList(userId: Int): Result<ResponseKuListDto> =
+        runCatching {
+            userDataSource.getKuList(userId)
+        }
+        
     override suspend fun getTopFiveUser(): Result<ResponseTopFiveUserDto> =
         runCatching {
             userDataSource.getTopFiveUser()
@@ -31,4 +38,9 @@ class UserRepositoryImpl @Inject constructor(
         runCatching {
             userDataSource.postLoginUser(requestUserLoginDto)
         }
+
+    override suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit> =
+       runCatching {
+           userDataSource.postKUCatch(requestKuCatchDto)
+       }
 }

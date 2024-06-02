@@ -30,7 +30,7 @@ android {
         buildConfigField("String", "NAVER_CLIENT_ID", localProperties["naver_client_id"] as String)
         manifestPlaceholders["NAVER_CLIENT_ID"] = localProperties["m_client_id"] as String
 
-        buildConfigField("String", "BASE_URL", localProperties["base.url"] as String)
+        buildConfigField("String", "BASE_URL",localProperties["base_url"] as String)
     }
 
     buildTypes {
