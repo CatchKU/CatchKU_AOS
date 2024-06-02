@@ -7,12 +7,14 @@ import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
+import com.example.catchku.data.model.response.ResponseUserLoginDto
 import com.example.catchku.data.source.UserDataSource
 import com.example.catchku.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
+    private val userCache: UserCache,
 ) : UserRepository {
     override suspend fun getTopFiveDepartment(): Result<ResponseTopFiveDepartmentDto> =
         runCatching {
@@ -34,13 +36,20 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.postRegisterUser(requestUserRegisterDto)
         }
 
-    override suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<Unit> =
+    override suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<ResponseUserLoginDto> =
         runCatching {
             userDataSource.postLoginUser(requestUserLoginDto)
+                .also {
+                    userCache.saveUserId(it.data.id)
+                }
         }
 
     override suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit> =
        runCatching {
            userDataSource.postKUCatch(requestKuCatchDto)
        }
+
+    override suspend fun getUserLoginId(): Int {
+        return userCache.getSaveUserId()
+    }
 }
