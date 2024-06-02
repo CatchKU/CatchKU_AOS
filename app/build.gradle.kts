@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 val localProperties = Properties()
@@ -26,6 +27,8 @@ android {
         }
         buildConfigField("String", "NAVER_CLIENT_ID", localProperties["naver_client_id"] as String)
         manifestPlaceholders["NAVER_CLIENT_ID"] = localProperties["m_client_id"] as String
+
+        buildConfigField("String", "BASE_URL", localProperties["base.url"] as String)
     }
 
     buildTypes {
