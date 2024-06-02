@@ -36,7 +36,6 @@ import com.example.catchku.util.UiState
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun LoginScreen(
-    context: Context,
     navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit,
     loginViewModel: LoginViewModel

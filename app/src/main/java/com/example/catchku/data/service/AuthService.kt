@@ -43,8 +43,8 @@ interface AuthService {
     @POST("item/create")
     fun itemCreate(@Body request: RequestItemCreateDto): Call<ResponseItemCreateDto>
 
-    @GET("user/ku-list/{userId}")
-    suspend fun getKuList(@Path("userId") userId : Int) : ResponseKuListDto
+    @GET("user/ku-list")
+    suspend fun getKuList(@Header ("userId") userId: Int) : ResponseKuListDto
 
     @DELETE("item/delete")
     fun itemDelete(@Body request: RequestItemDeleteDto): Call<ResponseDto>

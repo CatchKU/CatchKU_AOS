@@ -43,8 +43,6 @@ fun MapScreen(navController: NavHostController,mapViewModel: MapViewModel) {
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
-
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -91,12 +89,11 @@ fun SetMarker(
         height = 30.dp,
         onClick = {
             if(boundary){
-                mapViewModel.postKuCatch(0,markerLocation.kuName)
+                mapViewModel.postKuCatch(mapViewModel.userId, markerLocation.kuName)
                 true
             }else{
                 Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
                 false
-
             }
         }
     )
