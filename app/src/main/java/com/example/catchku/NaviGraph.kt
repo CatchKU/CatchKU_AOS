@@ -6,7 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.catchku.screen.ItemScreen
+import com.example.catchku.screen.item.ItemScreen
 import com.example.catchku.screen.ku.KuScreen
 import com.example.catchku.screen.map.MapScreen
 import com.example.catchku.screen.ranking.RankingScreen

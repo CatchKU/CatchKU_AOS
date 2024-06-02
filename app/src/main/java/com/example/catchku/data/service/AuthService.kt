@@ -1,19 +1,19 @@
 package com.example.catchku.data.service
 
-import com.example.catchku.data.model.request.RequestItemCreateDto
-import com.example.catchku.data.model.request.RequestItemDeleteDto
+import com.example.catchku.data.model.request.RequestUserUseItemDto
 import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestKuCreateDto
 import com.example.catchku.data.model.request.RequestKuDeleteDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
+import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.response.ResponseDto
-import com.example.catchku.data.model.response.ResponseItemCreateDto
 import com.example.catchku.data.model.response.ResponseKuCreateDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
+import com.example.catchku.data.model.response.ResponseUserItemListDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -39,14 +39,19 @@ interface AuthService {
     @GET("ku/top5-user")
     fun topFiveUser(): Call<ResponseTopFiveUserDto>
 
-    @POST("item/create")
-    fun itemCreate(@Body request: RequestItemCreateDto): Call<ResponseItemCreateDto>
+    @GET("user/item-list")
+    suspend fun userItemList(@Header("userId") userId: Int): Call<ResponseUserItemListDto>
+
+    @POST("user/obtain-item")
+    suspend fun userObtainItem(@Body request: RequestUserObtainItemDto): Call<ResponseDto>
+
+    @DELETE("user/use-item")
+    suspend fun userUseItem(@Body request: RequestUserUseItemDto): Call<ResponseDto>
+
 
     @GET("user/ku-list/{userId}")
     suspend fun getKuList(@Path("userId") userId : Int) : ResponseKuListDto
 
-    @DELETE("item/delete")
-    fun itemDelete(@Body request: RequestItemDeleteDto): Call<ResponseDto>
 
     @POST("user/register")
     suspend fun register(

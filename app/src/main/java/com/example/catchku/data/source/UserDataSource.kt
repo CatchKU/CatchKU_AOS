@@ -25,4 +25,10 @@ class UserDataSource @Inject constructor(
 
     suspend fun  getKuList(userId : Int) =
         authService.getKuList(userId)
+
+    suspend fun getUserItemList(userId: Int)=
+        authService.userItemList(userId)
+
+    suspend fun postObtainItem(requestUserLoginDto: RequestUserLoginDto) =
+        authService.login(requestUserLoginDto)
 }

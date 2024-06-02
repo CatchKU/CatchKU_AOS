@@ -4,7 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RequestItemDeleteDto(
+data class RequestUserObtainItemDto(
+    @SerialName("userId")
+    val userId: Int,
     @SerialName("itemName")
     val itemName: String,
 )

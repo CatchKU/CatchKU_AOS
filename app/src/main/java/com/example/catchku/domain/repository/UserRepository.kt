@@ -7,6 +7,7 @@ import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.model.response.ResponseUserItemListDto
 
 interface UserRepository {
     suspend fun getTopFiveDepartment(): Result<ResponseTopFiveDepartmentDto>
@@ -18,4 +19,6 @@ interface UserRepository {
     suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<Unit>
 
     suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit>
+
+    suspend fun getUserItemList(userId: Int): ResponseUserItemListDto
 }

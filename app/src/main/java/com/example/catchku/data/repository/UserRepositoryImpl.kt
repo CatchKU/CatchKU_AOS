@@ -6,6 +6,7 @@ import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.model.response.ResponseUserItemListDto
 import com.example.catchku.data.source.UserDataSource
 import com.example.catchku.domain.repository.UserRepository
 import javax.inject.Inject
@@ -37,5 +38,10 @@ class UserRepositoryImpl @Inject constructor(
        runCatching {
            userDataSource.postKUCatch(requestKuCatchDto)
        }
+
+//    override suspend fun getUserItemList(userId: Int): ResponseUserItemListDto =
+//        runCatching {
+//            userDataSource.getUserItemList(userId)
+//        }
 
 }

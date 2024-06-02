@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RequestItemCreateDto(
+data class RequestUserUseItemDto(
+    @SerialName("userId")
+    val userId: Int,
     @SerialName("itemName")
     val itemName: String,
-    @SerialName("itemValue")
-    val itemValue: Int,
 )
