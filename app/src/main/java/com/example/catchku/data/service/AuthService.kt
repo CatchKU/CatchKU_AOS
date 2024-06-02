@@ -37,7 +37,7 @@ interface AuthService {
     suspend fun topFiveDepartment(): ResponseTopFiveDepartmentDto
 
     @GET("ku/top5-user")
-    fun topFiveUser(): Call<ResponseTopFiveUserDto>
+    suspend fun topFiveUser(): ResponseTopFiveUserDto
 
     @POST("item/create")
     fun itemCreate(@Body request: RequestItemCreateDto): Call<ResponseItemCreateDto>
