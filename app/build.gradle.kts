@@ -118,4 +118,7 @@ dependencies {
 
     //Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 }

@@ -1,6 +1,7 @@
 package com.example.catchku
 
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavHostController
@@ -54,7 +55,9 @@ fun NaviGraph(
                 route = Routes.Login.route,
             ) {
                 LoginScreen(
-                    navController = navController, bottomBarVisible = bottomBarVisible, loginViewModel
+                    navController = navController,
+                    bottomBarVisible = bottomBarVisible,
+                    loginViewModel = loginViewModel
                 )
             }
 

@@ -20,10 +20,10 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.postRegisterUser(
                 RequestUserRegisterDto(
-                    user.email,
-                    user.name,
-                    user.password,
-                    user.departmentName
+                    email = user.email,
+                    name = user.name,
+                    password = user.password,
+                    departmentName = user.departmentName
                 )
             ).onSuccess { response ->
                 Timber.e("성공 $response")

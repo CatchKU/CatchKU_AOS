@@ -1,9 +1,12 @@
 package com.example.catchku.screen.ku
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.catchku.data.model.response.KuListInfo
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,13 +20,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class KuViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userCache: UserCache
 ) : ViewModel() {
 
     private val _getKuList=
         MutableStateFlow<UiState<ResponseKuListDto>>(UiState.Loading)
-    val getKuList: StateFlow<UiState<ResponseKuListDto>> =
-        _getKuList.asStateFlow()
+    val getKuList: StateFlow<UiState<ResponseKuListDto>> = _getKuList.asStateFlow()
+
+    fun getUserId(): Int{
+        return userCache.getSaveUserId()
+    }
 
     fun getKuList(userId : Int) {
         viewModelScope.launch {

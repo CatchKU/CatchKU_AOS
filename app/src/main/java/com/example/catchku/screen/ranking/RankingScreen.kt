@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,26 +32,34 @@ import androidx.compose.ui.unit.times
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.catchku.Routes
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.model.response.ResponseTopFiveUserDto
 import com.example.catchku.domain.entity.Department
+import com.example.catchku.domain.entity.UserRanking
 import com.example.catchku.util.UiState
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun RankingScreen(navController: NavHostController, rankingViewModel: RankingViewModel) {
 
+    var isDepartmentScreen by remember { mutableStateOf<Boolean>(true) }
+
     val lifecycleOwner = LocalLifecycleOwner
-    val uiState by rankingViewModel.getTopFiveDepartmentState
+    val departmentState by rankingViewModel.getTopFiveDepartmentState
+        .flowWithLifecycle(lifecycleOwner.current.lifecycle)
+        .collectAsState(initial = UiState.Empty)
+    
+    val userState by rankingViewModel.getTopFiveUserState
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
     rankingViewModel.getTopFiveDepartment()
+    rankingViewModel.getTopFiveUser()
 
     var getDepartments by remember { mutableStateOf<List<Department>>(emptyList()) }
+    var getUsers by remember { mutableStateOf<List<UserRanking>>(emptyList()) }
 
-    fun mapper(value: ResponseTopFiveDepartmentDto): List<Department> {
+    fun departmentMapper(value: ResponseTopFiveDepartmentDto): List<Department> {
         return value.data.map { dto ->
             Department(
                 departmentName = dto.departmentName,
@@ -60,14 +67,34 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
             )
         }
     }
+    
+    fun userMapper(value: ResponseTopFiveUserDto): List<UserRanking> {
+        return value.data.map {dto ->
+            UserRanking(
+                userId = dto.userId,
+                userName = dto.userName,
+                kuCount = dto.kuCount
+            )
+        }
+    }
 
-    when (uiState) {
+    when (departmentState) {
         is UiState.Empty -> Unit
         is UiState.Failure -> Unit
         is UiState.Loading -> Unit
         is UiState.Success -> {
-            val data = (uiState as UiState.Success<ResponseTopFiveDepartmentDto>).data
-            getDepartments = mapper(data)
+            val data = (departmentState as UiState.Success<ResponseTopFiveDepartmentDto>).data
+            getDepartments = departmentMapper(data)
+        }
+    }
+    
+    when (userState) {
+        is UiState.Empty -> Unit
+        is UiState.Failure -> Unit
+        is UiState.Loading -> Unit
+        is UiState.Success -> {
+            val data = (userState as UiState.Success<ResponseTopFiveUserDto>).data
+            getUsers = userMapper(data)
         }
     }
 
@@ -76,15 +103,40 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        RankScreen(getDepartments)
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(onClick = { isDepartmentScreen = true }) {
+                Text(text = "학과별 랭킹")
+            }
+            Button(onClick = { isDepartmentScreen = false }) {
+                Text(text = "사용자별 랭킹")
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (isDepartmentScreen) {
+            Department_RankScreen(getDepartments)
+        } else {
+            User_RankScreen(getUsers)
+        }
     }
 }
 
 @Composable
-fun RankScreen(departments: List<Department>) {
+fun Department_RankScreen(departments: List<Department>) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Graph(departments)
         Rank_List(departments)
+    }
+}
+
+@Composable
+fun User_RankScreen(users: List<UserRanking>) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        userGraph(users)
+        user_Rank_List(users)
     }
 }
 
@@ -125,6 +177,43 @@ fun Graph_Card(
             ),
             modifier = Modifier.padding(top = 8.dp)
         )
+    }
+}
+
+@Composable
+fun userGraph(users: List<UserRanking>) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        users.forEachIndexed { index, user ->
+            Graph_Card(
+                color = when (index) {
+                    0 -> Color(0xFFFFD3E3)
+                    1 -> Color(0xFFD3FFF0)
+                    2 -> Color(0xFFEEE1FF)
+                    else -> Color.Gray
+                },
+                major = user.userName,
+                rank = (index + 1).toString(),
+                height = (210.dp - (index * 70.dp)).coerceAtLeast(70.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun user_Rank_List(users: List<UserRanking>) {
+    Column(Modifier.padding(10.dp)) {
+        users.forEachIndexed { index, user ->
+            Rank_List_Card(
+                rank = (index + 1).toString(),
+                major = user.userName,
+                number = user.kuCount.toString()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
     }
 }
 
@@ -195,7 +284,7 @@ fun Rank_List_Card(rank: String, major: String, number: String) {
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = number + " 명",
+            text = number + " 마리",
             style = TextStyle(
                 fontSize = 16.sp, fontWeight = FontWeight.Bold
             ),

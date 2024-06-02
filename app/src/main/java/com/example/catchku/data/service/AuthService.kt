@@ -14,6 +14,7 @@ import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
 import com.example.catchku.data.model.response.ResponseUserItemListDto
+import com.example.catchku.data.model.response.ResponseUserLoginDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -37,7 +38,7 @@ interface AuthService {
     suspend fun topFiveDepartment(): ResponseTopFiveDepartmentDto
 
     @GET("ku/top5-user")
-    fun topFiveUser(): Call<ResponseTopFiveUserDto>
+    suspend fun topFiveUser(): ResponseTopFiveUserDto
 
     @GET("user/item-list")
     suspend fun userItemList(@Header("userId") userId: Int): Call<ResponseUserItemListDto>
@@ -49,8 +50,8 @@ interface AuthService {
     suspend fun userUseItem(@Body request: RequestUserUseItemDto): Call<ResponseDto>
 
 
-    @GET("user/ku-list/{userId}")
-    suspend fun getKuList(@Path("userId") userId : Int) : ResponseKuListDto
+    @GET("user/ku-list")
+    suspend fun getKuList(@Header ("userId") userId: Int) : ResponseKuListDto
 
 
     @POST("user/register")
@@ -61,7 +62,7 @@ interface AuthService {
     @POST("user/login")
     suspend fun login(
         @Body request: RequestUserLoginDto
-    )
+    ): ResponseUserLoginDto
 
     @POST("user/catch-ku")
     suspend fun kuCatch(
