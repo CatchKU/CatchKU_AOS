@@ -9,6 +9,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @Composable
 fun rememberViewModelStoreOwner(): ViewModelStoreOwner {
@@ -20,7 +22,8 @@ val LocalNavGraphViewModelStoreOwner = staticCompositionLocalOf<ViewModelStoreOw
     error("Undefined")
 }
 
-class NavViewModel : ViewModel() {
+@HiltViewModel
+class NavViewModel @Inject constructor() : ViewModel() {
     var memberId by mutableIntStateOf(-1)
 }
 

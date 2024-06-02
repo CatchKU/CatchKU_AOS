@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.example.catchku.ui.theme.CatchKUTheme
@@ -60,7 +61,8 @@ fun HomeScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.padding(160.dp))
                 Button(
                     onClick = {
-                        Toast.makeText(context, "아직 구현 안함!", Toast.LENGTH_SHORT).show()
+                        navController.navigate(Routes.Map.route)
+//                        Toast.makeText(context, "아직 구현 안함!", Toast.LENGTH_SHORT).show()
                     },
                     colors = ButtonDefaults.buttonColors(Color(0xFF1F855A))
                 ) {
