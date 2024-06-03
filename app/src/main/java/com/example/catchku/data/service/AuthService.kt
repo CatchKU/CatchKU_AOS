@@ -2,6 +2,7 @@ package com.example.catchku.data.service
 
 import com.example.catchku.data.model.request.RequestItemCreateDto
 import com.example.catchku.data.model.request.RequestItemDeleteDto
+import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestKuCreateDto
 import com.example.catchku.data.model.request.RequestKuDeleteDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
@@ -9,15 +10,18 @@ import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseItemCreateDto
 import com.example.catchku.data.model.response.ResponseKuCreateDto
+import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseTopFiveUserDto
+import com.example.catchku.data.model.response.ResponseUserLoginDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthService {
     @POST("ku/create")
@@ -39,6 +43,9 @@ interface AuthService {
     @POST("item/create")
     fun itemCreate(@Body request: RequestItemCreateDto): Call<ResponseItemCreateDto>
 
+    @GET("user/ku-list")
+    suspend fun getKuList(@Header ("userId") userId: Int) : ResponseKuListDto
+
     @DELETE("item/delete")
     fun itemDelete(@Body request: RequestItemDeleteDto): Call<ResponseDto>
 
@@ -50,6 +57,11 @@ interface AuthService {
     @POST("user/login")
     suspend fun login(
         @Body request: RequestUserLoginDto
+    ): ResponseUserLoginDto
+
+    @POST("user/catch-ku")
+    suspend fun kuCatch(
+        @Body request: RequestKuCatchDto
     )
 
 }

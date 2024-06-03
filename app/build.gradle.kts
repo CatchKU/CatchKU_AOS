@@ -30,7 +30,7 @@ android {
         buildConfigField("String", "NAVER_CLIENT_ID", localProperties["naver_client_id"] as String)
         manifestPlaceholders["NAVER_CLIENT_ID"] = localProperties["m_client_id"] as String
 
-        buildConfigField("String", "BASE_URL", localProperties["base.url"] as String)
+        buildConfigField("String", "BASE_URL",localProperties["base_url"] as String)
     }
 
     buildTypes {
@@ -118,4 +118,7 @@ dependencies {
 
     //Timber
     implementation("com.jakewharton.timber:timber:4.7.1")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 }

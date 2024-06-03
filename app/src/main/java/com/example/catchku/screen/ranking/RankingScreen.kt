@@ -108,10 +108,10 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(onClick = { isDepartmentScreen = true }) {
-                Text(text = "Department Rankings")
+                Text(text = "학과별 랭킹")
             }
             Button(onClick = { isDepartmentScreen = false }) {
-                Text(text = "User Rankings")
+                Text(text = "사용자별 랭킹")
             }
         }
         Spacer(modifier = Modifier.height(16.dp))

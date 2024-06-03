@@ -1,6 +1,7 @@
 package com.example.catchku
 
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavHostController
@@ -8,11 +9,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.catchku.screen.ItemScreen
 import com.example.catchku.screen.ku.KuScreen
-import com.example.catchku.screen.MapScreen
+import com.example.catchku.screen.map.MapScreen
 import com.example.catchku.screen.ranking.RankingScreen
 import com.example.catchku.screen.HomeScreen
+import com.example.catchku.screen.ku.KuViewModel
 import com.example.catchku.screen.login.LoginScreen
 import com.example.catchku.screen.login.LoginViewModel
+import com.example.catchku.screen.map.MapViewModel
 import com.example.catchku.screen.ranking.RankingViewModel
 import com.example.catchku.screen.signup.SignupScreen
 import com.example.catchku.screen.signup.SignupViewModel
@@ -32,6 +35,8 @@ fun NaviGraph(
     signupViewModel: SignupViewModel,
     loginViewModel: LoginViewModel,
     rankingViewModel: RankingViewModel,
+    mapViewModel: MapViewModel,
+    kuViewModel: KuViewModel,
     navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit
 ) {
@@ -50,7 +55,9 @@ fun NaviGraph(
                 route = Routes.Login.route,
             ) {
                 LoginScreen(
-                    navController = navController, bottomBarVisible = bottomBarVisible, loginViewModel
+                    navController = navController,
+                    bottomBarVisible = bottomBarVisible,
+                    loginViewModel = loginViewModel
                 )
             }
 
@@ -59,7 +66,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Map.route) {
-                MapScreen(navController)
+                MapScreen(navController,mapViewModel)
             }
 
             composable(route = Routes.Item.route) {
@@ -67,7 +74,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Ku.route) {
-                KuScreen(navController)
+                KuScreen(navController, kuViewModel)
             }
 
             composable(route = Routes.Ranking.route) {
