@@ -2,7 +2,9 @@ package com.example.catchku.data.source
 
 import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
+import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
+import com.example.catchku.data.model.request.RequestUserUseItemDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.service.AuthService
@@ -30,8 +32,12 @@ class UserDataSource @Inject constructor(
         authService.getKuList(userId)
 
     suspend fun getUserItemList(userId: Int)=
-        authService.userItemList(userId)
+        authService.getUserItemList(userId)
 
-    suspend fun postObtainItem(requestUserLoginDto: RequestUserLoginDto) =
-        authService.login(requestUserLoginDto)
+    suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto) =
+        authService.userObtainItem(requestUserObtainItemDto)
+
+
+    suspend fun deleteUseItem(requestUserUseItemDto: RequestUserUseItemDto) =
+        authService.userUseItem(requestUserUseItemDto)
 }

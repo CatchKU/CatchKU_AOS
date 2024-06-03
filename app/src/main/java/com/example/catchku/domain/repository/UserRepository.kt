@@ -2,7 +2,9 @@ package com.example.catchku.domain.repository
 
 import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserLoginDto
+import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
+import com.example.catchku.data.model.request.RequestUserUseItemDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
@@ -20,13 +22,15 @@ interface UserRepository {
 
     suspend fun postRegisterUser(requestUserRegisterDto: RequestUserRegisterDto): Result<ResponseRegisterDto>
 
-    suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<Unit>
+    suspend fun getUserItemList(userId: Int): Result<ResponseUserItemListDto>
 
+    suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto) : Result<Unit>
+
+    suspend fun deleteUseItem(requestUserUseItemDto: RequestUserUseItemDto) : Result<Unit>
     suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit>
 
     suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<ResponseUserLoginDto>
 
     suspend fun getUserLoginId(): Int
 
-    suspend fun getUserItemList(userId: Int): ResponseUserItemListDto
 }

@@ -41,13 +41,13 @@ interface AuthService {
     suspend fun topFiveUser(): ResponseTopFiveUserDto
 
     @GET("user/item-list")
-    suspend fun userItemList(@Header("userId") userId: Int): Call<ResponseUserItemListDto>
+    suspend fun getUserItemList(@Header("userId") userId: Int): ResponseUserItemListDto
 
     @POST("user/obtain-item")
-    suspend fun userObtainItem(@Body request: RequestUserObtainItemDto): Call<ResponseDto>
+    suspend fun userObtainItem(@Body request: RequestUserObtainItemDto): ResponseDto
 
     @DELETE("user/use-item")
-    suspend fun userUseItem(@Body request: RequestUserUseItemDto): Call<ResponseDto>
+    suspend fun userUseItem(@Body request: RequestUserUseItemDto): ResponseDto
 
 
     @GET("user/ku-list")
