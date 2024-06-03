@@ -298,6 +298,6 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
 }
 
 
-private const val MAX_DISTANCE_THRESHOLD = 1000f // 사용자 반경
-private const val CATCH__DISTANCE_THRESHOLD = 1000f // 잡을수 있는 범위 반경
+private const val MAX_DISTANCE_THRESHOLD = 1000f // 사용자 반경 원래 150
+private const val CATCH__DISTANCE_THRESHOLD = 1000f // 잡을수 있는 범위 반경 원래 30
 

@@ -59,29 +59,15 @@ fun HomeScreen(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.padding(160.dp))
-                Button(
-                    onClick = {
-                        navController.navigate(Routes.Map.route)
-//                        Toast.makeText(context, "아직 구현 안함!", Toast.LENGTH_SHORT).show()
-                    },
-                    colors = ButtonDefaults.buttonColors(Color(0xFF1F855A))
-                ) {
-                    Text(text = "게임시작")
-                }
+
                 Spacer(modifier = Modifier.padding(20.dp))
                 Button(onClick = {
                     navController.navigate(Routes.Login.route)
                 },
                     colors = ButtonDefaults.buttonColors(Color(0xFF1F855A))) {
-                    Text(text = "로그인")
+                    Text(text = "게임시작")
                 }
-                Spacer(modifier = Modifier.padding(20.dp))
-                Button(onClick = {
-                    Toast.makeText(context, "아직 구현 안함!", Toast.LENGTH_SHORT).show()
-                },
-                    colors = ButtonDefaults.buttonColors(Color(0xFF1F855A))) {
-                    Text(text = "언어설정 / Language")
-                }
+
             }
 
         }
