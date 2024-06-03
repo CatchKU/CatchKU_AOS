@@ -28,9 +28,14 @@ class ItemScreenViewModel @Inject constructor(
         MutableStateFlow<UiState<ResponseUserItemListDto>>(UiState.Loading)
     val getUserItemList: StateFlow<UiState<ResponseUserItemListDto>> = _getUserItemList.asStateFlow()
 
-    fun getUserId(): Int{
-        return userCache.getSaveUserId()
+    fun getUserId() {
+        _initUserId.value = userCache.getSaveUserId()
     }
+
+    private val _initUserId = MutableStateFlow<Int>(-12)
+    val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
+
+
 
     fun getUserItemList(userId : Int) {
         viewModelScope.launch {

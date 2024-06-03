@@ -117,7 +117,7 @@ fun LazyGrid_Ku(kuList: List<KuInfo>) {
                 "쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.ku), "쿠"))
                 "공대 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.computer_ku), "공대 쿠"))
                 "다이빙 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.diving_ku), "다이빙 쿠"))
-                "우는 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.crying_catched_ku), "쿠"))
+                "우는 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.crying_catched_ku), "우는 쿠"))
             }
         }
     }
