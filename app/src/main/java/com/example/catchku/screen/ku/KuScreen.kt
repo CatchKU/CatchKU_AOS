@@ -35,7 +35,7 @@ import com.example.catchku.util.UiState
 
 data class Ku(val image: Painter, val kuName: String)
 
-@SuppressLint("FlowOperatorInvokedInComposition")
+@SuppressLint("FlowOperatorInvokedInComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun KuScreen(navController: NavHostController , kuViewModel: KuViewModel) {
 
@@ -46,7 +46,8 @@ fun KuScreen(navController: NavHostController , kuViewModel: KuViewModel) {
 
     var getKuList by remember { mutableStateOf<List<KuInfo>>(emptyList()) }
 
-    kuViewModel.getKuList(kuViewModel.getUserId())
+    kuViewModel.getUserId()
+    kuViewModel.getKuList(kuViewModel.initUserId.value)
 
     fun mapper(value: ResponseKuListDto): List<KuInfo> {
         return value.data.map {

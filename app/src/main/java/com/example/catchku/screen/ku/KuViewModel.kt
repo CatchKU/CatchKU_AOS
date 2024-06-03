@@ -28,8 +28,11 @@ class KuViewModel @Inject constructor(
         MutableStateFlow<UiState<ResponseKuListDto>>(UiState.Loading)
     val getKuList: StateFlow<UiState<ResponseKuListDto>> = _getKuList.asStateFlow()
 
-    fun getUserId(): Int{
-        return userCache.getSaveUserId()
+    private val _initUserId = MutableStateFlow<Int>(-12)
+    val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
+
+    fun getUserId() {
+        _initUserId.value = userCache.getSaveUserId()
     }
 
     fun getKuList(userId : Int) {
