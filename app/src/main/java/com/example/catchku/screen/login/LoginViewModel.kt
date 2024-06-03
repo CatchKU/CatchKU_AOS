@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
                 Timber.e("성공 $response")
                 userId = response.data.id
             }.onFailure { t ->
-                Log.e("ABCD", "ViewModel F로그인 실패: $t")
+                Log.e("ABCD", "ViewModel F로그인 실패: ${t.message!!}")
                 if (t is HttpException) {
                     val errorResponse = t.response()?.errorBody()?.string()
                     Timber.e("HTTP 실패: $errorResponse")
