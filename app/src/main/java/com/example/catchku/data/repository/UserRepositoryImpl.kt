@@ -63,7 +63,7 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.getUserItemList(userId)
         }
 
-    override suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto):Result<Unit> =
+    override suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto):Result<ResponseDto> =
         runCatching {
             userDataSource.postObtainItem(requestUserObtainItemDto)
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
+import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
@@ -25,10 +26,9 @@ class MapViewModel @Inject constructor(
     val postKuCatchState: StateFlow<UiState<Unit>> = _postKuCatchState.asStateFlow()
 
 
-    private val _postUserObtainItemState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
-    val postUserObtainItemState: StateFlow<UiState<Unit>> = _postUserObtainItemState.asStateFlow()
+    private val _postUserObtainItemState = MutableStateFlow<UiState<ResponseDto>>(UiState.Loading)
+    val postUserObtainItemState: StateFlow<UiState<ResponseDto>> = _postUserObtainItemState.asStateFlow()
 
-    var userId = userCache.getSaveUserId()
 
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()

@@ -40,7 +40,11 @@ import com.naver.maps.map.overlay.OverlayImage
 @Composable
 fun MapScreen(navController: NavHostController, mapViewModel: MapViewModel) {
     val lifecycleOwner = LocalLifecycleOwner
-    val uiState by mapViewModel.postKuCatchState
+    val uiCatchKuState by mapViewModel.postKuCatchState
+        .flowWithLifecycle(lifecycleOwner.current.lifecycle)
+        .collectAsState(initial = UiState.Empty)
+
+    val uiObtainItemState by mapViewModel.postUserObtainItemState
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
@@ -131,7 +135,7 @@ fun SetItemMarker(
         height = 30.dp,
         onClick = {
             if (boundary) {
-                mapViewModel.postUserObtainItem(mapViewModel.userId, itemLocation.itemName)
+                mapViewModel.postUserObtainItem(mapViewModel.initUserId.value, itemLocation.itemName)
                 true
             } else {
                 Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
@@ -256,7 +260,7 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ItemLocation(LatLng(37.5431505, 127.0751552), R.drawable.img_mapscreen_item1, "쌍안경"), // 행정관
         ItemLocation(LatLng(37.5442615, 127.0760717), R.drawable.img_mapscreen_item2, "로봇팔"), // 경영관
         ItemLocation(LatLng(37.5418772, 127.0782087), R.drawable.img_mapscreen_item1, "쌍안경"), // 학생회관
-
+        ItemLocation(LatLng(37.5435659, 127.0772119), R.drawable.img_mapscreen_item2, "로봇팔"), // 새천년관
     )
 
     // 사용자 반경 내 아이템만 표시
