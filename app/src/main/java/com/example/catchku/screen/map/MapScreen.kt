@@ -257,10 +257,10 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
     val userLocation = currLocation
 
     val markerLocations: List<ItemLocation> = listOf(
-        ItemLocation(LatLng(37.5431505, 127.0751552), R.drawable.img_mapscreen_item1, "쌍안경"), // 행정관
-        ItemLocation(LatLng(37.5442615, 127.0760717), R.drawable.img_mapscreen_item2, "로봇팔"), // 경영관
-        ItemLocation(LatLng(37.5418772, 127.0782087), R.drawable.img_mapscreen_item1, "쌍안경"), // 학생회관
-        ItemLocation(LatLng(37.5435659, 127.0772119), R.drawable.img_mapscreen_item2, "로봇팔"), // 새천년관
+        ItemLocation(LatLng(37.5431505, 127.0751552), R.drawable.img_mapscreen_item1, "쿠 레이더"), // 행정관
+        ItemLocation(LatLng(37.5442615, 127.0760717), R.drawable.img_mapscreen_item2, "조금 더 길어진 밧줄"), // 경영관
+        ItemLocation(LatLng(37.5418772, 127.0782087), R.drawable.img_mapscreen_item1, "쿠 레이더"), // 학생회관
+        ItemLocation(LatLng(37.5435659, 127.0772119), R.drawable.img_mapscreen_item2, "조금 더 길어진 밧줄"), // 새천년관
     )
 
     // 사용자 반경 내 아이템만 표시
