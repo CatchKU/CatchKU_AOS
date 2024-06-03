@@ -26,8 +26,6 @@ fun BottomBar(
         BottomNavItem.Item, BottomNavItem.Ranking,BottomNavItem.Ku
     )
 
-
-
     if (bottomBarVisible) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
