@@ -2,23 +2,33 @@ package com.example.catchku.screen.ranking
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +47,7 @@ import com.example.catchku.data.model.response.ResponseTopFiveUserDto
 import com.example.catchku.domain.entity.Department
 import com.example.catchku.domain.entity.UserRanking
 import com.example.catchku.util.UiState
+import kotlinx.coroutines.launch
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -48,7 +59,7 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
     val departmentState by rankingViewModel.getTopFiveDepartmentState
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
-    
+
     val userState by rankingViewModel.getTopFiveUserState
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
@@ -59,6 +70,12 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
     var getDepartments by remember { mutableStateOf<List<Department>>(emptyList()) }
     var getUsers by remember { mutableStateOf<List<UserRanking>>(emptyList()) }
 
+    val tabs = listOf("학과별 랭킹", "사용자별 랭킹")
+    val pagerState = rememberPagerState {
+        tabs.size
+    }
+    val coroutineScope = rememberCoroutineScope()
+
     fun departmentMapper(value: ResponseTopFiveDepartmentDto): List<Department> {
         return value.data.map { dto ->
             Department(
@@ -67,9 +84,9 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
             )
         }
     }
-    
+
     fun userMapper(value: ResponseTopFiveUserDto): List<UserRanking> {
-        return value.data.map {dto ->
+        return value.data.map { dto ->
             UserRanking(
                 userId = dto.userId,
                 userName = dto.userName,
@@ -87,7 +104,7 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
             getDepartments = departmentMapper(data)
         }
     }
-    
+
     when (userState) {
         is UiState.Empty -> Unit
         is UiState.Failure -> Unit
@@ -98,45 +115,98 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Button(onClick = { isDepartmentScreen = true }) {
-                Text(text = "학과별 랭킹")
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                        color = Color(0xFF066B40), // 인디케이터 색상 변경
+                    )
+                },
+                divider = {},
+                containerColor = Color.White, // 배경색 설정
+                contentColor = Color.Black
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = pagerState.currentPage == index,
+                        modifier = Modifier
+                            .width(200.dp)  // 탭의 가로 크기
+                            .height(50.dp), // 탭의 세로 크기
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }
+                    )
+                }
             }
-            Button(onClick = { isDepartmentScreen = false }) {
-                Text(text = "사용자별 랭킹")
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
+//        Row(
+//            horizontalArrangement = Arrangement.SpaceEvenly,
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Button(onClick = { isDepartmentScreen = true }) {
+//                Text(text = "학과별 랭킹")
+//            }
+//            Button(onClick = { isDepartmentScreen = false }) {
+//                Text(text = "사용자별 랭킹")
+//            }
+//        }
+            //        if (isDepartmentScreen) {
+//            Department_RankScreen(getDepartments)
+//        } else {
+//            User_RankScreen(getUsers)
+//        }
 
-        if (isDepartmentScreen) {
-            Department_RankScreen(getDepartments)
-        } else {
-            User_RankScreen(getUsers)
+            Box(modifier = Modifier.fillMaxSize()) {
+                HorizontalPager(
+                    state = pagerState,
+                    Modifier.fillMaxSize()
+                ) { page ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp)
+
+                    ) {
+                        // 페이지별 컨텐츠
+                        when (page) {
+                            0 -> Department_RankScreen(getDepartments)
+                            1 -> User_RankScreen(getUsers)
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
+
 @Composable
 fun Department_RankScreen(departments: List<Department>) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Graph(departments)
-        Rank_List(departments)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Graph(departments)
+            Rank_List(departments)
+        }
     }
 }
 
 @Composable
 fun User_RankScreen(users: List<UserRanking>) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        userGraph(users)
-        user_Rank_List(users)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            userGraph(users)
+            user_Rank_List(users)
+        }
     }
 }
 
@@ -188,31 +258,32 @@ fun userGraph(users: List<UserRanking>) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         users.forEachIndexed { index, user ->
-            Graph_Card(
-                color = when (index) {
-                    0 -> Color(0xFFFFD3E3)
-                    1 -> Color(0xFFD3FFF0)
-                    2 -> Color(0xFFEEE1FF)
-                    else -> Color.Gray
-                },
-                major = user.userName,
-                rank = (index + 1).toString(),
-                height = (210.dp - (index * 70.dp)).coerceAtLeast(70.dp)
-            )
+            if (index < 3) {
+                Graph_Card(
+                    color = when (index) {
+                        0 -> Color(0xFFFFD3E3)
+                        1 -> Color(0xFFD3FFF0)
+                        2 -> Color(0xFFEEE1FF)
+                        else -> Color.Gray
+                    },
+                    major = user.userName,
+                    rank = (index + 1).toString(),
+                    height = (210.dp - (index * 70.dp)).coerceAtLeast(70.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun user_Rank_List(users: List<UserRanking>) {
-    Column(Modifier.padding(10.dp)) {
-        users.forEachIndexed { index, user ->
+    LazyColumn(Modifier.padding(10.dp)) {
+        itemsIndexed(users) { index, items ->
             Rank_List_Card(
                 rank = (index + 1).toString(),
-                major = user.userName,
-                number = user.kuCount.toString()
+                major = items.userName,
+                number = items.kuCount.toString()
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -225,31 +296,32 @@ fun Graph(departments: List<Department>) {
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         departments.forEachIndexed { index, department ->
-            Graph_Card(
-                color = when (index) {
-                    0 -> Color(0xFFFFD3E3)
-                    1 -> Color(0xFFD3FFF0)
-                    2 -> Color(0xFFEEE1FF)
-                    else -> Color.Gray
-                },
-                major = department.departmentName,
-                rank = (index + 1).toString(),
-                height = (210.dp - (index * 70.dp)).coerceAtLeast(70.dp)
-            )
+            if (index < 3) {
+                Graph_Card(
+                    color = when (index) {
+                        0 -> Color(0xFFFFD3E3)
+                        1 -> Color(0xFFD3FFF0)
+                        2 -> Color(0xFFEEE1FF)
+                        else -> Color.Gray
+                    },
+                    major = department.departmentName,
+                    rank = (index + 1).toString(),
+                    height = (210.dp - (index * 70.dp)).coerceAtLeast(70.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun Rank_List(departments: List<Department>) {
-    Column(Modifier.padding(10.dp)) {
-        departments.forEachIndexed { index, department ->
+    LazyColumn(Modifier.padding(10.dp)) {
+        itemsIndexed(departments) { index, department ->
             Rank_List_Card(
                 rank = (index + 1).toString(),
                 major = department.departmentName,
                 number = department.kuCount.toString()
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
