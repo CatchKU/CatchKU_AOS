@@ -24,10 +24,19 @@ class MapViewModel @Inject constructor(
     private val _postKuCatchState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val postKuCatchState: StateFlow<UiState<Unit>> = _postKuCatchState.asStateFlow()
 
+
     private val _postUserObtainItemState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val postUserObtainItemState: StateFlow<UiState<Unit>> = _postUserObtainItemState.asStateFlow()
 
     var userId = userCache.getSaveUserId()
+
+    private val _initUserId = MutableStateFlow<Int>(-12)
+    val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
+
+    fun getUserId() {
+        _initUserId.value = userCache.getSaveUserId()
+    }
+
 
     fun postKuCatch(userId: Int, kuName: String) {
         viewModelScope.launch {
