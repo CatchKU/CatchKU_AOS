@@ -5,7 +5,6 @@ import com.example.catchku.data.model.request.RequestUserLoginDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.request.RequestUserRegisterDto
 import com.example.catchku.data.model.request.RequestUserUseItemDto
-import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseRegisterDto
 import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto

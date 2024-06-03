@@ -3,7 +3,7 @@ package com.example.catchku.screen.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catchku.data.model.request.RequestKuCatchDto
-import com.example.catchku.data.model.request.RequestUserLoginDto
+import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
@@ -23,6 +23,9 @@ class MapViewModel @Inject constructor(
 ): ViewModel() {
     private val _postKuCatchState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val postKuCatchState: StateFlow<UiState<Unit>> = _postKuCatchState.asStateFlow()
+
+    private val _postUserObtainItemState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val postUserObtainItemState: StateFlow<UiState<Unit>> = _postUserObtainItemState.asStateFlow()
 
     var userId = userCache.getSaveUserId()
 
@@ -45,4 +48,25 @@ class MapViewModel @Inject constructor(
             }
         }
     }
+
+    fun postUserObtainItem(userId: Int, itemName: String) {
+        viewModelScope.launch {
+            userRepository.postObtainItem(
+                RequestUserObtainItemDto(
+                    userId,
+                    itemName
+                )
+            ).onSuccess { response ->
+                _postUserObtainItemState.value = UiState.Success(response)
+                Timber.e("성공 $response")
+            }.onFailure { t ->
+                if (t is HttpException) {
+                    val errorResponse = t.response()?.errorBody()?.string()
+                    Timber.e("HTTP 실패: $errorResponse")
+                }
+                _postUserObtainItemState.value = UiState.Failure("${t.message}")
+            }
+        }
+    }
+
 }
