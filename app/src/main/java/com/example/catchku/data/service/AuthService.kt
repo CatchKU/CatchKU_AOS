@@ -19,6 +19,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -46,9 +47,10 @@ interface AuthService {
     @POST("user/obtain-item")
     suspend fun userObtainItem(@Body request: RequestUserObtainItemDto): ResponseDto
 
-    @DELETE("user/use-item")
-    suspend fun userUseItem(@Body request: RequestUserUseItemDto): ResponseDto
-
+    @HTTP(method = "DELETE", path = "user/use-item", hasBody = true)
+    suspend fun userUseItem(
+        @Body request: RequestUserUseItemDto
+    ): ResponseDto
 
     @GET("user/ku-list")
     suspend fun getKuList(@Header ("userId") userId: Int) : ResponseKuListDto
