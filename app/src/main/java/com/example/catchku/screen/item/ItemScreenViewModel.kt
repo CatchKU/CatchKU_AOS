@@ -1,12 +1,8 @@
 package com.example.catchku.screen.item
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.request.RequestUserUseItemDto
-import com.example.catchku.data.model.response.ResponseKuListDto
-import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.model.response.ResponseUserItemListDto
 import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
@@ -61,7 +57,6 @@ class ItemScreenViewModel @Inject constructor(
 
 
     fun deleteUseItem(userId: Int, itemName: String) {
-        Log.d("useItem","함수 시작")
         viewModelScope.launch {
             userRepository.deleteUseItem(
                 RequestUserUseItemDto(
@@ -71,17 +66,14 @@ class ItemScreenViewModel @Inject constructor(
             ).onSuccess { response ->
                 _deleteUseItem.value = UiState.Success(response)
                 Timber.e("성공 $response")
-                Log.d("useItem","함수 성공")
             }.onFailure { t ->
                 if (t is HttpException) {
                     val errorResponse = t.response()?.errorBody()?.string()
                     Timber.e("HTTP 실패: $errorResponse")
                 }
                 _deleteUseItem.value = UiState.Failure("${t.message}")
-                Log.d("useItem","함수 실패")
             }
         }
-        Log.d("useItem","함수 탈출")
     }
 
 

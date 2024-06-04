@@ -1,7 +1,6 @@
 package com.example.catchku.screen.item
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -30,22 +28,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.catchku.R
 import com.example.catchku.data.model.response.ItemInfo
-import com.example.catchku.data.model.response.ResponseDto
-import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseUserItemListDto
-import com.example.catchku.domain.entity.KuInfo
 import com.example.catchku.util.UiState
 
 data class Item(val itemName: String, val count: Int)
@@ -153,7 +145,6 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "사용하기",
                 modifier = Modifier.clickable {
-                    Log.d("useItem","id: ${itemScreenViewModel.initUserId.value} itemName: ${item.itemName}")
                     itemScreenViewModel.deleteUseItem(
                         itemScreenViewModel.initUserId.value,
                         item.itemName
@@ -166,9 +157,9 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
 }
 
 @Composable
-fun Lazy_Item(itemlist: List<ItemInfo>, itemScreenViewModel: ItemScreenViewModel) {
+fun Lazy_Item(itemList: List<ItemInfo>, itemScreenViewModel: ItemScreenViewModel) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
-        items(itemlist) { item ->
+        items(itemList) { item ->
             ItemCard(item, itemScreenViewModel)
         }
     }
