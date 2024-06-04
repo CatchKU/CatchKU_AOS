@@ -107,12 +107,14 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
 
+    val itemCount = remember { mutableStateOf(item.count) }
     LaunchedEffect(item.itemName) {
         imageResource = when (item.itemName) {
             "쿠 레이더" -> R.drawable.img_mapscreen_item1
             else -> R.drawable.img_mapscreen_item2
         }
     }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -135,25 +137,23 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
                 )
             )
             Text(
-                text = "남은 개수 : ${item.count}개",
+                text = "남은 개수 : ${itemCount.value}개",
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 15.sp
                 ),
                 color = Color(0xFFB5B6B7)
-
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "사용하기",
                 modifier = Modifier.clickable {
+                    itemCount.value--
                     itemScreenViewModel.deleteUseItem(
                         itemScreenViewModel.initUserId.value,
                         item.itemName
                     )
                 })
         }
-
     }
-
 }
 
 @Composable
