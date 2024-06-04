@@ -1,7 +1,9 @@
 package com.example.catchku.screen.item
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,18 +40,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.catchku.R
 import com.example.catchku.data.model.response.ItemInfo
+import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.model.response.ResponseKuListDto
 import com.example.catchku.data.model.response.ResponseUserItemListDto
 import com.example.catchku.domain.entity.KuInfo
 import com.example.catchku.util.UiState
 
-data class Item( val itemName: String, val count: Int)
+data class Item(val itemName: String, val count: Int)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("FlowOperatorInvokedInComposition", "StateFlowValueCalledInComposition")
 @Composable
 fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreenViewModel) {
     val lifecycleOwner = LocalLifecycleOwner
-    val uiState by itemScreenViewModel.getUserItemList
+    val uiItemListState by itemScreenViewModel.getUserItemList
+        .flowWithLifecycle(lifecycleOwner.current.lifecycle)
+        .collectAsState(initial = UiState.Empty)
+
+    val uiUseItemState by itemScreenViewModel.getUserItemList
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
@@ -59,21 +70,22 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
     fun mapper(value: ResponseUserItemListDto): List<ItemInfo> {
         return value.data.map {
             ItemInfo(
-                itemName = it.itemName ,
+                itemName = it.itemName,
                 count = it.count
             )
         }
     }
 
-    when (uiState) {
+    when (uiItemListState) {
         is UiState.Empty -> Unit
         is UiState.Failure -> Unit
         is UiState.Loading -> Unit
         is UiState.Success -> {
-            val data = (uiState as UiState.Success<ResponseUserItemListDto>).data
+            val data = (uiItemListState as UiState.Success<ResponseUserItemListDto>).data
             getUserItemList = mapper(data)
         }
     }
+
 
 
     Column(
@@ -81,19 +93,22 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "ITEMS",
-            style = androidx.compose.ui.text.TextStyle(fontSize = 30.sp),
-            modifier = Modifier.padding(30.dp),
-            fontWeight = FontWeight.ExtraBold
-        )
-        Lazy_Item(getUserItemList)
+        CenterAlignedTopAppBar(title = {
+            Text(
+                text = "ITEMS",
+                style = androidx.compose.ui.text.TextStyle(fontSize = 30.sp),
+                modifier = Modifier.padding(30.dp),
+                fontWeight = FontWeight.ExtraBold
+            )
+        })
+
+        Lazy_Item(getUserItemList, itemScreenViewModel)
     }
 }
 
 
 @Composable
-fun ItemCard(item: ItemInfo) {
+fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
     var imageResource by remember {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
@@ -134,14 +149,23 @@ fun ItemCard(item: ItemInfo) {
 
             )
         }
+
+        Text(text = "사용하기",
+            modifier = Modifier.clickable {
+                Log.d("useItem","id: ${itemScreenViewModel.initUserId.value} itemName: ${item.itemName}")
+                itemScreenViewModel.deleteUseItem(
+                    itemScreenViewModel.initUserId.value,
+                    item.itemName
+                )
+            })
     }
 }
 
 @Composable
-fun Lazy_Item(itemlist: List<ItemInfo>) {
+fun Lazy_Item(itemlist: List<ItemInfo>, itemScreenViewModel: ItemScreenViewModel) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
         items(itemlist) { item ->
-            ItemCard(item)
+            ItemCard(item, itemScreenViewModel)
         }
     }
 }
