@@ -38,9 +38,8 @@ import androidx.navigation.NavHostController
 import com.example.catchku.R
 import com.example.catchku.data.model.response.ItemInfo
 import com.example.catchku.data.model.response.ResponseUserItemListDto
+import com.example.catchku.domain.entity.Item
 import com.example.catchku.util.UiState
-
-data class Item(val itemName: String, val count: Int)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("FlowOperatorInvokedInComposition", "StateFlowValueCalledInComposition")
@@ -51,19 +50,14 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
-    val uiUseItemState by itemScreenViewModel.getUserItemList
-        .flowWithLifecycle(lifecycleOwner.current.lifecycle)
-        .collectAsState(initial = UiState.Empty)
-
-    var getUserItemList by remember { mutableStateOf<List<ItemInfo>>(emptyList()) }
+    var getUserItemList by remember { mutableStateOf<List<Item>>(emptyList()) }
 
     itemScreenViewModel.getUserId()
     itemScreenViewModel.getUserItemList(itemScreenViewModel.initUserId.value)
 
-
-    fun mapper(value: ResponseUserItemListDto): List<ItemInfo> {
+    fun mapper(value: ResponseUserItemListDto): List<Item> {
         return value.data.map {
-            ItemInfo(
+            Item(
                 itemName = it.itemName,
                 count = it.count
             )
@@ -79,8 +73,6 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
             getUserItemList = mapper(data)
         }
     }
-
-
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -100,14 +92,14 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
     }
 }
 
-
 @Composable
-fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
+fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel) {
     var imageResource by remember {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
 
-    val itemCount = remember { mutableStateOf(item.count) }
+    var itemCount by remember(item.count) { mutableStateOf(item.count) }
+
     LaunchedEffect(item.itemName) {
         imageResource = when (item.itemName) {
             "쿠 레이더" -> R.drawable.img_mapscreen_item1
@@ -137,7 +129,7 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
                 )
             )
             Text(
-                text = "남은 개수 : ${itemCount.value}개",
+                text = "남은 개수 : ${itemCount}개",
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 15.sp
                 ),
@@ -146,18 +138,20 @@ fun ItemCard(item: ItemInfo, itemScreenViewModel: ItemScreenViewModel) {
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "사용하기",
                 modifier = Modifier.clickable {
-                    itemCount.value--
-                    itemScreenViewModel.deleteUseItem(
-                        itemScreenViewModel.initUserId.value,
-                        item.itemName
-                    )
+                    if (itemCount > 0) {
+                        itemCount--
+                        itemScreenViewModel.deleteUseItem(
+                            itemScreenViewModel.initUserId.value,
+                            item.itemName
+                        )
+                    }
                 })
         }
     }
 }
 
 @Composable
-fun Lazy_Item(itemList: List<ItemInfo>, itemScreenViewModel: ItemScreenViewModel) {
+fun Lazy_Item(itemList: List<Item>, itemScreenViewModel: ItemScreenViewModel) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
         items(itemList) { item ->
             ItemCard(item, itemScreenViewModel)
