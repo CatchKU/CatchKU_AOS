@@ -25,15 +25,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface AuthService {
-    @POST("ku/create")
-    fun kuCreate(
-        @Body request: RequestKuCreateDto,
-    ): Call<ResponseKuCreateDto>
-
-    @DELETE("ku/delete")
-    fun kuDelete(
-        @Body request: RequestKuDeleteDto,
-    ): Call<ResponseDto>
 
     @GET("ku/top5-department")
     suspend fun topFiveDepartment(): ResponseTopFiveDepartmentDto
@@ -53,8 +44,7 @@ interface AuthService {
     ): ResponseDto
 
     @GET("user/ku-list")
-    suspend fun getKuList(@Header ("userId") userId: Int) : ResponseKuListDto
-
+    suspend fun getKuList(@Header("userId") userId: Int): ResponseKuListDto
 
     @POST("user/register")
     suspend fun register(

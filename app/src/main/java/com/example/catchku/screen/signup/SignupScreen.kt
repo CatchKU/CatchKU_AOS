@@ -46,7 +46,6 @@ fun SignupScreen(
     var textDepartmentName by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-
     fun signUp(
         textStudentEmail: String,
         textName: String,
@@ -140,9 +139,11 @@ fun DrawDepartmentDropdown(
     var expanded by remember { mutableStateOf(false) }
     val departments = listOf("컴퓨터공학부", "전기전자공학부", "생물공학과", "경제학과", "기계항공공학부", "수학과")
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
         Row(
             modifier = Modifier
                 .clickable { expanded = true }

@@ -62,7 +62,6 @@ fun LoginScreen(
         }
     }
 
-
     fun login(textId: String, textPw: String) {
         loginViewModel.postLoginUser(textId, textPw)
     }

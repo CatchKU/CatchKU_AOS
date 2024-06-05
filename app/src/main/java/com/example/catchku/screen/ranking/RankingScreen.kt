@@ -2,7 +2,6 @@ package com.example.catchku.screen.ranking
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,8 +51,6 @@ import kotlinx.coroutines.launch
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 fun RankingScreen(navController: NavHostController, rankingViewModel: RankingViewModel) {
-
-    var isDepartmentScreen by remember { mutableStateOf<Boolean>(true) }
 
     val lifecycleOwner = LocalLifecycleOwner
     val departmentState by rankingViewModel.getTopFiveDepartmentState
@@ -148,23 +145,6 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
                     )
                 }
             }
-//        Row(
-//            horizontalArrangement = Arrangement.SpaceEvenly,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Button(onClick = { isDepartmentScreen = true }) {
-//                Text(text = "학과별 랭킹")
-//            }
-//            Button(onClick = { isDepartmentScreen = false }) {
-//                Text(text = "사용자별 랭킹")
-//            }
-//        }
-            //        if (isDepartmentScreen) {
-//            Department_RankScreen(getDepartments)
-//        } else {
-//            User_RankScreen(getUsers)
-//        }
-
             Box(modifier = Modifier.fillMaxSize()) {
                 HorizontalPager(
                     state = pagerState,
@@ -174,13 +154,11 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(20.dp)
-
                     ) {
                         // 페이지별 컨텐츠
                         when (page) {
                             0 -> Department_RankScreen(getDepartments)
                             1 -> User_RankScreen(getUsers)
-
                         }
                     }
                 }
@@ -188,7 +166,6 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
         }
     }
 }
-
 
 @Composable
 fun Department_RankScreen(departments: List<Department>) {
@@ -204,8 +181,8 @@ fun Department_RankScreen(departments: List<Department>) {
 fun User_RankScreen(users: List<UserRanking>) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            userGraph(users)
-            user_Rank_List(users)
+            UserGraph(users)
+            User_Rank_List(users)
         }
     }
 }
@@ -231,14 +208,11 @@ fun Graph_Card(
             ),
             modifier = Modifier.padding(top = 8.dp, bottom = 10.dp)
         )
-
         Column(
             modifier = Modifier
                 .size(width = 70.dp, height = height)
                 .background(color, shape = RoundedCornerShape(8.dp)),
-        ) {
-
-        }
+        ) {}
         Text(
             text = major,
             style = TextStyle(
@@ -251,7 +225,7 @@ fun Graph_Card(
 }
 
 @Composable
-fun userGraph(users: List<UserRanking>) {
+fun UserGraph(users: List<UserRanking>) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom,
@@ -276,7 +250,7 @@ fun userGraph(users: List<UserRanking>) {
 }
 
 @Composable
-fun user_Rank_List(users: List<UserRanking>) {
+fun User_Rank_List(users: List<UserRanking>) {
     LazyColumn(Modifier.padding(10.dp)) {
         itemsIndexed(users) { index, items ->
             Rank_List_Card(
@@ -335,7 +309,6 @@ fun Rank_List_Card(rank: String, major: String, number: String) {
             .height(50.dp)
             .background(Color(0xFFF7F8F9), shape = RoundedCornerShape(8.dp))
             .padding(start = 10.dp)
-
     ) {
         Text(
             text = rank,
@@ -364,7 +337,6 @@ fun Rank_List_Card(rank: String, major: String, number: String) {
             modifier = Modifier
                 .padding(start = 60.dp)
                 .weight(1f),
-
             )
     }
 }

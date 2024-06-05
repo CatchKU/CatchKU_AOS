@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val userRepository: UserRepository
-): ViewModel() {
+) : ViewModel() {
 
     fun postRegisterUser(user: User) {
         viewModelScope.launch {
@@ -35,5 +35,4 @@ class SignupViewModel @Inject constructor(
             }
         }
     }
-
 }

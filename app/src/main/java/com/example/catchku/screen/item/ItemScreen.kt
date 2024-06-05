@@ -50,6 +50,10 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
         .collectAsState(initial = UiState.Empty)
 
+    val uiUseItemState by itemScreenViewModel.deleteUseItem
+        .flowWithLifecycle(lifecycleOwner.current.lifecycle)
+        .collectAsState(initial = UiState.Empty)
+
     var getUserItemList by remember { mutableStateOf<List<Item>>(emptyList()) }
 
     itemScreenViewModel.getUserId()

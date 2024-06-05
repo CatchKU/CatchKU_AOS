@@ -40,7 +40,7 @@ data class Ku(val image: Painter, val kuName: String)
 
 @SuppressLint("FlowOperatorInvokedInComposition", "StateFlowValueCalledInComposition")
 @Composable
-fun KuScreen(navController: NavHostController , kuViewModel: KuViewModel) {
+fun KuScreen(navController: NavHostController, kuViewModel: KuViewModel) {
 
     val lifecycleOwner = LocalLifecycleOwner
     val uiState by kuViewModel.getKuList
@@ -71,15 +71,17 @@ fun KuScreen(navController: NavHostController , kuViewModel: KuViewModel) {
         }
     }
 
-    Column (modifier = Modifier.fillMaxSize(),
+    Column(
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
 
-    ){
-        Text(text = "잡은 쿠 리스트",
+    ) {
+        Text(
+            text = "잡은 쿠 리스트",
             modifier = Modifier.padding(30.dp),
             style = TextStyle(fontSize = 30.sp),
             fontWeight = FontWeight.ExtraBold
-            )
+        )
         LazyGrid_Ku(getKuList)
     }
 }
@@ -87,8 +89,7 @@ fun KuScreen(navController: NavHostController , kuViewModel: KuViewModel) {
 @Composable
 fun Ku_Card(item: Ku) {
     Column(
-        modifier = Modifier.padding(8.dp)
-        ,
+        modifier = Modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -113,7 +114,7 @@ fun LazyGrid_Ku(kuList: List<KuInfo>) {
         contentPadding = PaddingValues(20.dp)
     ) {
         items(kuList) { ku ->
-            when(ku.kuName) {
+            when (ku.kuName) {
                 "쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.ku), "쿠"))
                 "공대 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.computer_ku), "공대 쿠"))
                 "다이빙 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.diving_ku), "다이빙 쿠"))

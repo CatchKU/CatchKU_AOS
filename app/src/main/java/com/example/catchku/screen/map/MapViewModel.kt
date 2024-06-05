@@ -21,13 +21,13 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCache: UserCache,
-): ViewModel() {
+) : ViewModel() {
     private val _postKuCatchState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val postKuCatchState: StateFlow<UiState<Unit>> = _postKuCatchState.asStateFlow()
 
-
     private val _postUserObtainItemState = MutableStateFlow<UiState<ResponseDto>>(UiState.Loading)
-    val postUserObtainItemState: StateFlow<UiState<ResponseDto>> = _postUserObtainItemState.asStateFlow()
+    val postUserObtainItemState: StateFlow<UiState<ResponseDto>> =
+        _postUserObtainItemState.asStateFlow()
 
 
     private val _initUserId = MutableStateFlow<Int>(-12)
@@ -37,14 +37,13 @@ class MapViewModel @Inject constructor(
         _initUserId.value = userCache.getSaveUserId()
     }
 
-
     fun postKuCatch(userId: Int, kuName: String) {
         viewModelScope.launch {
             userRepository.postKuCatch(
-               RequestKuCatchDto(
-                   userId,
-                   kuName
-               )
+                RequestKuCatchDto(
+                    userId,
+                    kuName
+                )
             ).onSuccess { response ->
                 _postKuCatchState.value = UiState.Success(response)
                 Timber.e("성공 $response")
@@ -77,5 +76,4 @@ class MapViewModel @Inject constructor(
             }
         }
     }
-
 }

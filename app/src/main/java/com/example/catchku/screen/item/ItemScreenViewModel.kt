@@ -20,13 +20,14 @@ import javax.inject.Inject
 class ItemScreenViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCache: UserCache
-): ViewModel() {
+) : ViewModel() {
 
-    private val _getUserItemList=
+    private val _getUserItemList =
         MutableStateFlow<UiState<ResponseUserItemListDto>>(UiState.Loading)
-    val getUserItemList: StateFlow<UiState<ResponseUserItemListDto>> = _getUserItemList.asStateFlow()
+    val getUserItemList: StateFlow<UiState<ResponseUserItemListDto>> =
+        _getUserItemList.asStateFlow()
 
-    private val _deleteUseItem=
+    private val _deleteUseItem =
         MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val deleteUseItem: StateFlow<UiState<Unit>> = _deleteUseItem.asStateFlow()
 
@@ -37,9 +38,7 @@ class ItemScreenViewModel @Inject constructor(
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
 
-
-
-    fun getUserItemList(userId : Int) {
+    fun getUserItemList(userId: Int) {
         viewModelScope.launch {
             userRepository.getUserItemList(userId)
                 .onSuccess { response ->
@@ -54,7 +53,6 @@ class ItemScreenViewModel @Inject constructor(
                 }
         }
     }
-
 
     fun deleteUseItem(userId: Int, itemName: String) {
         viewModelScope.launch {
@@ -75,7 +73,4 @@ class ItemScreenViewModel @Inject constructor(
             }
         }
     }
-
-
-
 }
