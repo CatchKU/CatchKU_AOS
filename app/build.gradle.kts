@@ -31,6 +31,10 @@ android {
         manifestPlaceholders["NAVER_CLIENT_ID"] = localProperties["m_client_id"] as String
 
         buildConfigField("String", "BASE_URL",localProperties["base.url"] as String)
+
+        ndk {
+            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a","x86_64", "x86"))
+        }
     }
 
     buildTypes {
@@ -121,4 +125,8 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // unity
+    implementation(project(":unityLibrary"))
+    //implementation("com.google.ar:core:1.43.0")
 }

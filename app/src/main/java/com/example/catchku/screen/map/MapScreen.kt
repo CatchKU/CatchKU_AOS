@@ -1,6 +1,9 @@
 package com.example.catchku.screen.map
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -34,6 +37,7 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
+import com.unity3d.player.UnityPlayerActivity
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(ExperimentalNaverMapApi::class)
@@ -89,6 +93,7 @@ fun SetMarker(
     mapViewModel: MapViewModel
 ) {
     val context = LocalContext.current
+    val activity = context as? Activity
     Marker(
         state = MarkerState(
             position = LatLng(
@@ -100,6 +105,9 @@ fun SetMarker(
         width = 30.dp,
         height = 30.dp,
         onClick = {
+            activity?.let { activity ->
+                navigateToUnityActivity(activity)
+            }
             if (boundary) {
                 mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
                 Toast.makeText(context, "Catch KU!", Toast.LENGTH_SHORT).show()
@@ -282,6 +290,14 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
     return results[0]
 }
 
+private fun navigateToUnityActivity(activity: Activity) {
+    activity.startActivity(
+        Intent(
+            /* packageContext = */ activity,
+            /* cls = */ UnityPlayerActivity::class.java
+        )
+    )
+}
 
 private const val MAX_DISTANCE_THRESHOLD = 1000f // 사용자 반경 원래 150
 private const val CATCH__DISTANCE_THRESHOLD = 1000f // 잡을수 있는 범위 반경 원래 30

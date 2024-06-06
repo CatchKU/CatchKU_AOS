@@ -2,11 +2,14 @@ package com.example.catchku
 
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.catchku.screen.item.ItemScreen
 import com.example.catchku.screen.ku.KuScreen
 import com.example.catchku.screen.map.MapScreen
@@ -31,18 +34,19 @@ sealed class Routes(val route: String) {
     data object Ku : Routes("Ku")
 }
 
+inline fun <reified T> Array<out ViewModel>.getViewModel(): T {
+    Log.d("[LOG]", "T: ${T::class.java}")
+    return firstOrNull { it is T } as? T
+        ?: throw Exception("ViewModel type: ${T::class.java} not found")
+}
+
 @Composable
 fun NaviGraph(
-    signupViewModel: SignupViewModel,
-    loginViewModel: LoginViewModel,
-    rankingViewModel: RankingViewModel,
-    mapViewModel: MapViewModel,
-    kuViewModel: KuViewModel,
-    itemScreenViewModel: ItemScreenViewModel,
-    navController: NavHostController,
+    vararg viewModels: ViewModel,
     bottomBarVisible: (Boolean) -> Unit
 ) {
     val navStoreOwner = rememberViewModelStoreOwner()
+    val navController = rememberNavController()
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
     ) {
@@ -59,28 +63,43 @@ fun NaviGraph(
                 LoginScreen(
                     navController = navController,
                     bottomBarVisible = bottomBarVisible,
-                    loginViewModel = loginViewModel
+                    loginViewModel = viewModels.getViewModel<LoginViewModel>()
                 )
             }
 
             composable(route = Routes.SignUp.route) {
-                SignupScreen(navController, signupViewModel)
+                SignupScreen(
+                    navController = navController,
+                    signupViewModel = viewModels.getViewModel<SignupViewModel>()
+                )
             }
 
             composable(route = Routes.Map.route) {
-                MapScreen(navController,mapViewModel)
+                MapScreen(
+                    navController = navController,
+                    mapViewModel = viewModels.getViewModel<MapViewModel>()
+                )
             }
 
             composable(route = Routes.Item.route) {
-                ItemScreen(navController,itemScreenViewModel)
+                ItemScreen(
+                    navController = navController,
+                    itemScreenViewModel = viewModels.getViewModel<ItemScreenViewModel>()
+                )
             }
 
             composable(route = Routes.Ku.route) {
-                KuScreen(navController, kuViewModel)
+                KuScreen(
+                    navController = navController,
+                    kuViewModel = viewModels.getViewModel<KuViewModel>()
+                )
             }
 
             composable(route = Routes.Ranking.route) {
-                RankingScreen(navController, rankingViewModel)
+                RankingScreen(
+                    navController = navController,
+                    rankingViewModel = viewModels.getViewModel<RankingViewModel>()
+                )
             }
         }
     }
