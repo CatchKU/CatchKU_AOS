@@ -41,6 +41,7 @@ import com.example.catchku.domain.entity.Item
 import com.example.catchku.screen.map.MapViewModel
 import com.example.catchku.util.UiState
 import androidx.compose.runtime.rememberCoroutineScope
+import com.example.catchku.Routes
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,14 +109,14 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
             )
         })
 
-        Lazy_Item(getUserItemList, itemScreenViewModel,mapViewModel)
+        Lazy_Item(getUserItemList, itemScreenViewModel,mapViewModel, navController)
     }
 }
 
 
 
 @Composable
-fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel) {
+fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel, navController: NavHostController) {
     var imageResource by remember {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
@@ -171,10 +172,14 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
                         coroutineScope.launch {
                             if (item.itemName == "쿠 레이더") {
                                 mapViewModel.updateMaxDistanceThreshold(200f)
-
                             } else {
                                 mapViewModel.updateCatchDistanceThreshold(60f)
 
+                            }
+                        }
+                        navController.navigate(Routes.Map.route) {
+                            popUpTo(Routes.Item.route) {
+                                inclusive = true
                             }
                         }
                     }
@@ -186,10 +191,10 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
 
 
 @Composable
-fun Lazy_Item(itemList: List<Item>, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel) {
+fun Lazy_Item(itemList: List<Item>, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel, navController: NavHostController) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
         items(itemList) { item ->
-            ItemCard(item, itemScreenViewModel, mapViewModel)
+            ItemCard(item, itemScreenViewModel, mapViewModel, navController)
         }
     }
 }
