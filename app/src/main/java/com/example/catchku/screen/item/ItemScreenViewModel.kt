@@ -1,10 +1,8 @@
 package com.example.catchku.screen.item
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catchku.data.model.response.ResponseKuListDto
-import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
+import com.example.catchku.data.model.request.RequestUserUseItemDto
 import com.example.catchku.data.model.response.ResponseUserItemListDto
 import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
@@ -22,17 +20,25 @@ import javax.inject.Inject
 class ItemScreenViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCache: UserCache
-): ViewModel() {
+) : ViewModel() {
 
-    private val _getUserItemList=
+    private val _getUserItemList =
         MutableStateFlow<UiState<ResponseUserItemListDto>>(UiState.Loading)
-    val getUserItemList: StateFlow<UiState<ResponseUserItemListDto>> = _getUserItemList.asStateFlow()
+    val getUserItemList: StateFlow<UiState<ResponseUserItemListDto>> =
+        _getUserItemList.asStateFlow()
 
-    fun getUserId(): Int{
-        return userCache.getSaveUserId()
+    private val _deleteUseItem =
+        MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteUseItem: StateFlow<UiState<Unit>> = _deleteUseItem.asStateFlow()
+
+    fun getUserId() {
+        _initUserId.value = userCache.getSaveUserId()
     }
 
-    fun getUserItemList(userId : Int) {
+    private val _initUserId = MutableStateFlow<Int>(-12)
+    val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
+
+    fun getUserItemList(userId: Int) {
         viewModelScope.launch {
             userRepository.getUserItemList(userId)
                 .onSuccess { response ->
@@ -48,5 +54,23 @@ class ItemScreenViewModel @Inject constructor(
         }
     }
 
-
+    fun deleteUseItem(userId: Int, itemName: String) {
+        viewModelScope.launch {
+            userRepository.deleteUseItem(
+                RequestUserUseItemDto(
+                    userId,
+                    itemName
+                )
+            ).onSuccess { response ->
+                _deleteUseItem.value = UiState.Success(response)
+                Timber.e("성공 $response")
+            }.onFailure { t ->
+                if (t is HttpException) {
+                    val errorResponse = t.response()?.errorBody()?.string()
+                    Timber.e("HTTP 실패: $errorResponse")
+                }
+                _deleteUseItem.value = UiState.Failure("${t.message}")
+            }
+        }
+    }
 }

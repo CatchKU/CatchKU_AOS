@@ -14,7 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.catchku.screen.item.ItemScreenViewModel
 import com.example.catchku.screen.ku.KuViewModel
 import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.screen.login.LoginViewModel
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
                 val rankingViewModel by viewModels<RankingViewModel>()
                 val mapViewModel by viewModels<MapViewModel>()
                 val kuViewModel by viewModels<KuViewModel>()
+                val itemViewModel by viewModels<ItemScreenViewModel>()
 
 
                 Scaffold(
@@ -50,7 +53,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel,mapViewModel,kuViewModel,navController) { visible ->
+                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel,mapViewModel,kuViewModel,itemViewModel,navController) { visible ->
                             bottomBarVisible = visible
                         }
                     }
