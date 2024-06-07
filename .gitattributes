@@ -1,0 +1,2 @@
+CatchKU_AOS filter=lfs diff=lfs merge=lfs -text
+libil2cpp.so filter=lfs diff=lfs merge=lfs -text
