@@ -72,7 +72,7 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Item.route) {
-                ItemScreen(navController,itemScreenViewModel)
+                ItemScreen(navController,itemScreenViewModel,mapViewModel)
             }
 
             composable(route = Routes.Ku.route) {

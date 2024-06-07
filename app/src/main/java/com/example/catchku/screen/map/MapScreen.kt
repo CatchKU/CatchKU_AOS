@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,17 @@ fun MapScreen(navController: NavHostController, mapViewModel: MapViewModel) {
 
     mapViewModel.getUserId()
 
+    @Composable
+    fun observeStateChanges(mapViewModel: MapViewModel) {
+        val maxDistanceThreshold by mapViewModel.maxDistanceThreshold.collectAsState()
+        val catchDistanceThreshold by mapViewModel.catchDistanceThreshold.collectAsState()
+        LaunchedEffect(maxDistanceThreshold, catchDistanceThreshold) {
+            // Handle any side effects or UI updates here
+        }
+        // Use these values to update your UI as needed
+    }
+    observeStateChanges(mapViewModel)
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -74,7 +86,7 @@ fun MapScreen(navController: NavHostController, mapViewModel: MapViewModel) {
         ) {
             markerState.value?.let {
                 DrawKuMarker(currLocation = it, mapViewModel)
-                DrawUserMarker(currLocation = it)
+                DrawUserMarker(currLocation = it,mapViewModel)
                 DrawItemMarker(currLocation = it, mapViewModel)
             }
         }
@@ -136,6 +148,7 @@ fun SetItemMarker(
                     mapViewModel.initUserId.value,
                     itemLocation.itemName
                 )
+                Toast.makeText(context, "아이템 획득!", Toast.LENGTH_SHORT).show()
                 true
             } else {
                 Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
@@ -145,20 +158,21 @@ fun SetItemMarker(
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun DrawUserMarker(currLocation: LatLng) {
+fun DrawUserMarker(currLocation: LatLng,mapViewModel: MapViewModel) {
 
     // 사용자의 현재 위치
     CircleOverlay(
         center = LatLng(currLocation.latitude, currLocation.longitude),
         Color.Red.copy(alpha = 0.3F),
-        150.0
+        mapViewModel.maxDistanceThreshold.value.toDouble()
     )
 
     CircleOverlay(
         center = LatLng(currLocation.latitude, currLocation.longitude),
         color = Color(0xFFCF4A4A),
-        50.0
+        mapViewModel.catchDistanceThreshold.value.toDouble()
     )
 }
 
@@ -204,13 +218,13 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        if (distance <= MAX_DISTANCE_THRESHOLD && distance > CATCH__DISTANCE_THRESHOLD) {
+        if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold .value) {
             SetMarker(
                 location,
                 boundary = false,
                 mapViewModel
             )
-        } else if (distance > 0 && distance <= CATCH__DISTANCE_THRESHOLD) {
+        } else if (distance > 0 && distance <= mapViewModel.catchDistanceThreshold .value) {
             SetMarker(
                 location,
                 boundary = true,
@@ -255,13 +269,13 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        if (distance <= MAX_DISTANCE_THRESHOLD && distance > CATCH__DISTANCE_THRESHOLD) {
+        if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold .value) {
             SetItemMarker(
                 location,
                 boundary = false,
                 mapViewModel
             )
-        } else if (distance > 0 && distance <= CATCH__DISTANCE_THRESHOLD) {
+        } else if (distance > 0 && distance <= mapViewModel.catchDistanceThreshold .value) {
             SetItemMarker(
                 location,
                 boundary = true,
@@ -283,6 +297,4 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
 }
 
 
-private const val MAX_DISTANCE_THRESHOLD = 1000f // 사용자 반경 원래 150
-private const val CATCH__DISTANCE_THRESHOLD = 1000f // 잡을수 있는 범위 반경 원래 30
 
