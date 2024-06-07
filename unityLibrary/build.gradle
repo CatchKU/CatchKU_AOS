@@ -7,6 +7,7 @@ dependencies {
     implementation(name: 'UnityARCore', ext:'aar')
     implementation(name: 'unityandroidpermissions', ext:'aar')
     implementation project('xrmanifest.androidlib')
+    implementation libs.inputmapping
 
 }
 
