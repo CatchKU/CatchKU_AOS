@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity() {
                             mapViewModel,
                             kuViewModel,
                             itemViewModel,
+                            navController
                         ) { visible ->
                             bottomBarVisible = visible
                         }

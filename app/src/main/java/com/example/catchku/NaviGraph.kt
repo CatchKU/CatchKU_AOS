@@ -34,19 +34,18 @@ sealed class Routes(val route: String) {
     data object Ku : Routes("Ku")
 }
 
-inline fun <reified T> Array<out ViewModel>.getViewModel(): T {
-    Log.d("[LOG]", "T: ${T::class.java}")
-    return firstOrNull { it is T } as? T
-        ?: throw Exception("ViewModel type: ${T::class.java} not found")
-}
-
 @Composable
 fun NaviGraph(
-    vararg viewModels: ViewModel,
+    signupViewModel: SignupViewModel,
+    loginViewModel: LoginViewModel,
+    rankingViewModel: RankingViewModel,
+    mapViewModel: MapViewModel,
+    kuViewModel: KuViewModel,
+    itemScreenViewModel: ItemScreenViewModel,
+    navController: NavHostController,
     bottomBarVisible: (Boolean) -> Unit
 ) {
     val navStoreOwner = rememberViewModelStoreOwner()
-    val navController = rememberNavController()
     CompositionLocalProvider(
         LocalNavGraphViewModelStoreOwner provides navStoreOwner
     ) {
@@ -63,43 +62,28 @@ fun NaviGraph(
                 LoginScreen(
                     navController = navController,
                     bottomBarVisible = bottomBarVisible,
-                    loginViewModel = viewModels.getViewModel<LoginViewModel>()
+                    loginViewModel = loginViewModel
                 )
             }
 
             composable(route = Routes.SignUp.route) {
-                SignupScreen(
-                    navController = navController,
-                    signupViewModel = viewModels.getViewModel<SignupViewModel>()
-                )
+                SignupScreen(navController, signupViewModel)
             }
 
             composable(route = Routes.Map.route) {
-                MapScreen(
-                    navController = navController,
-                    mapViewModel = viewModels.getViewModel<MapViewModel>()
-                )
+                MapScreen(navController,mapViewModel)
             }
 
             composable(route = Routes.Item.route) {
-                ItemScreen(
-                    navController = navController,
-                    itemScreenViewModel = viewModels.getViewModel<ItemScreenViewModel>()
-                )
+                ItemScreen(navController,itemScreenViewModel)
             }
 
             composable(route = Routes.Ku.route) {
-                KuScreen(
-                    navController = navController,
-                    kuViewModel = viewModels.getViewModel<KuViewModel>()
-                )
+                KuScreen(navController, kuViewModel)
             }
 
             composable(route = Routes.Ranking.route) {
-                RankingScreen(
-                    navController = navController,
-                    rankingViewModel = viewModels.getViewModel<RankingViewModel>()
-                )
+                RankingScreen(navController, rankingViewModel)
             }
         }
     }
