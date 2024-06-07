@@ -59,6 +59,7 @@ fun NaviGraph(
             composable(
                 route = Routes.Login.route,
             ) {
+                bottomBarVisible(false)
                 LoginScreen(
                     navController = navController,
                     bottomBarVisible = bottomBarVisible,
@@ -71,18 +72,22 @@ fun NaviGraph(
             }
 
             composable(route = Routes.Map.route) {
+                bottomBarVisible(true)
                 MapScreen(navController,mapViewModel)
             }
 
             composable(route = Routes.Item.route) {
+                bottomBarVisible(true)
                 ItemScreen(navController,itemScreenViewModel)
             }
 
             composable(route = Routes.Ku.route) {
+                bottomBarVisible(true)
                 KuScreen(navController, kuViewModel)
             }
 
             composable(route = Routes.Ranking.route) {
+                bottomBarVisible(true)
                 RankingScreen(navController, rankingViewModel)
             }
         }

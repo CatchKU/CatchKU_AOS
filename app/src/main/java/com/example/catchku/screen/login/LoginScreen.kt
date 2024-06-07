@@ -66,7 +66,9 @@ fun LoginScreen(
         is UiState.Success -> {
             bottomBarVisible(true)
             navController.navigate(Routes.Map.route) {
-                popUpTo(Routes.Home.route)
+                popUpTo(Routes.Home.route) {
+                    inclusive = true
+                }
             }
         }
     }
@@ -128,21 +130,21 @@ fun LoginScreen(
             ) {
                 Text(text = "회원가입")
             }
-            Button(
-                modifier = Modifier.padding(10.dp),
-                onClick = {
-                    (context as? Activity)?.let {
-                        it.startActivity(
-                            Intent(
-                                /* packageContext = */ it,
-                                /* cls = */ UnityPlayerActivity::class.java
-                            )
-                        )
-                    }
-                }
-            ) {
-                Text(text = "유니티 테스트 버튼")
-            }
+//            Button(
+//                modifier = Modifier.padding(10.dp),
+//                onClick = {
+//                    (context as? Activity)?.let {
+//                        it.startActivity(
+//                            Intent(
+//                                /* packageContext = */ it,
+//                                /* cls = */ UnityPlayerActivity::class.java
+//                            )
+//                        )
+//                    }
+//                }
+//            ) {
+//                Text(text = "유니티 테스트 버튼")
+//            }
         }
     }
 }
