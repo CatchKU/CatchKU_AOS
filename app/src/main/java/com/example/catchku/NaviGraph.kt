@@ -78,7 +78,7 @@ fun NaviGraph(
 
             composable(route = Routes.Item.route) {
                 bottomBarVisible(true)
-                ItemScreen(navController,itemScreenViewModel)
+                ItemScreen(navController,itemScreenViewModel, mapViewModel)
             }
 
             composable(route = Routes.Ku.route) {

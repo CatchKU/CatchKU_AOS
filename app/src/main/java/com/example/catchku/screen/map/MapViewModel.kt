@@ -9,6 +9,7 @@ import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,4 +77,27 @@ class MapViewModel @Inject constructor(
             }
         }
     }
+
+    private val _maxDistanceThreshold = MutableStateFlow(150f)
+    val maxDistanceThreshold: StateFlow<Float> = _maxDistanceThreshold
+
+    private val _catchDistanceThreshold = MutableStateFlow(30f)
+    val catchDistanceThreshold: StateFlow<Float> = _catchDistanceThreshold
+
+    fun updateMaxDistanceThreshold(value: Float) {
+        viewModelScope.launch {
+            _maxDistanceThreshold.value = value
+            delay(8000)
+            _maxDistanceThreshold.value = 150f
+        }
+    }
+
+    fun updateCatchDistanceThreshold(value: Float) {
+        viewModelScope.launch {
+            _catchDistanceThreshold.value = value
+            delay(8000)
+            _catchDistanceThreshold.value = 30f
+        }
+    }
+
 }

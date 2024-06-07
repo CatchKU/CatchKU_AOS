@@ -36,15 +36,17 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.catchku.R
-import com.example.catchku.data.model.response.ItemInfo
 import com.example.catchku.data.model.response.ResponseUserItemListDto
 import com.example.catchku.domain.entity.Item
+import com.example.catchku.screen.map.MapViewModel
 import com.example.catchku.util.UiState
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("FlowOperatorInvokedInComposition", "StateFlowValueCalledInComposition")
 @Composable
-fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreenViewModel) {
+fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreenViewModel,mapViewModel: MapViewModel) {
     val lifecycleOwner = LocalLifecycleOwner
     val uiItemListState by itemScreenViewModel.getUserItemList
         .flowWithLifecycle(lifecycleOwner.current.lifecycle)
@@ -58,6 +60,8 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
 
     itemScreenViewModel.getUserId()
     itemScreenViewModel.getUserItemList(itemScreenViewModel.initUserId.value)
+
+
 
     fun mapper(value: ResponseUserItemListDto): List<Item> {
         return value.data.map {
@@ -78,6 +82,18 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
         }
     }
 
+    @Composable
+    fun observeStateChanges(mapViewModel: MapViewModel) {
+        val maxDistanceThreshold by mapViewModel.maxDistanceThreshold.collectAsState()
+        val catchDistanceThreshold by mapViewModel.catchDistanceThreshold.collectAsState()
+        LaunchedEffect(maxDistanceThreshold, catchDistanceThreshold) {
+            // Handle any side effects or UI updates here
+        }
+        // Use these values to update your UI as needed
+    }
+
+    observeStateChanges(mapViewModel)
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,17 +108,20 @@ fun ItemScreen(navController: NavHostController, itemScreenViewModel: ItemScreen
             )
         })
 
-        Lazy_Item(getUserItemList, itemScreenViewModel)
+        Lazy_Item(getUserItemList, itemScreenViewModel,mapViewModel)
     }
 }
 
+
+
 @Composable
-fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel) {
+fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel) {
     var imageResource by remember {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
 
-    var itemCount by remember(item.count) { mutableStateOf(item.count) }
+    var itemCount by remember(item.count) { mutableIntStateOf(item.count) }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(item.itemName) {
         imageResource = when (item.itemName) {
@@ -148,17 +167,29 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel) {
                             itemScreenViewModel.initUserId.value,
                             item.itemName
                         )
+
+                        coroutineScope.launch {
+                            if (item.itemName == "쿠 레이더") {
+                                mapViewModel.updateMaxDistanceThreshold(200f)
+
+                            } else {
+                                mapViewModel.updateCatchDistanceThreshold(60f)
+
+                            }
+                        }
                     }
                 })
         }
     }
 }
 
+
+
 @Composable
-fun Lazy_Item(itemList: List<Item>, itemScreenViewModel: ItemScreenViewModel) {
+fun Lazy_Item(itemList: List<Item>, itemScreenViewModel: ItemScreenViewModel, mapViewModel: MapViewModel) {
     LazyColumn(modifier = Modifier.padding(20.dp)) {
         items(itemList) { item ->
-            ItemCard(item, itemScreenViewModel)
+            ItemCard(item, itemScreenViewModel, mapViewModel)
         }
     }
 }
