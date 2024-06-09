@@ -106,30 +106,34 @@ fun SetMarker(
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
-    Marker(
-        state = MarkerState(
-            position = LatLng(
-                markerLocation.latLng.latitude,
-                markerLocation.latLng.longitude
-            )
-        ),
-        icon = OverlayImage.fromResource(markerLocation.KuId),
-        width = 30.dp,
-        height = 30.dp,
-        onClick = {
+    val isVisible by markerLocation.isVisible.collectAsState()
 
-            if (boundary) {
-                activity?.let { activity ->
-                    navigateToUnityActivity(activity)
+    if (isVisible) {
+        Marker(
+            state = MarkerState(
+                position = LatLng(
+                    markerLocation.latLng.latitude,
+                    markerLocation.latLng.longitude
+                )
+            ),
+            icon = OverlayImage.fromResource(markerLocation.KuId),
+            width = 30.dp,
+            height = 30.dp,
+            onClick = {
+                if (boundary) {
+                    activity?.let { activity ->
+                        navigateToUnityActivity(activity)
+                    }
+                    mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
+                    mapViewModel.hideMarkerFor10Seconds(markerLocation)
+                    true
+                } else {
+                    Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
+                    false
                 }
-                mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
-                true
-            } else {
-                Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
-                false
             }
-        }
-    )
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)

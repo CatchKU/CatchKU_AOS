@@ -6,6 +6,7 @@ import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.repository.UserCache
+import com.example.catchku.domain.entity.MarkerLocation
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -97,6 +98,15 @@ class MapViewModel @Inject constructor(
             _catchDistanceThreshold.value = value
             delay(8000)
             _catchDistanceThreshold.value = 30f
+        }
+    }
+
+    // Function to hide a specific marker for 10 seconds
+    fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
+        viewModelScope.launch {
+            markerLocation.isVisible.value = false
+            delay(10000)
+            markerLocation.isVisible.value = true
         }
     }
 
