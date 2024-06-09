@@ -52,7 +52,7 @@ class LoginViewModel @Inject constructor(
                     val errorResponse = t.response()?.errorBody()?.string()
                     Timber.e("HTTP 실패: $errorResponse")
                 }
-                _postLoginUserState.value = UiState.Failure("${t.message}")
+                _postLoginUserState.value = UiState.Failure("로그인에 실패했습니다\n사유: ${t.message}")
             }
         }
     }

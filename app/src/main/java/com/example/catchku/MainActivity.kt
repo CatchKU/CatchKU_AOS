@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
                 val kuViewModel by viewModels<KuViewModel>()
                 val itemViewModel by viewModels<ItemScreenViewModel>()
 
-
                 Scaffold(
                     bottomBar = {
                         if (bottomBarVisible) {
@@ -53,7 +52,15 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .fillMaxSize()
                     ) {
-                        NaviGraph(signupViewModel,loginViewModel,rankingViewModel,mapViewModel,kuViewModel,itemViewModel,navController) { visible ->
+                        NaviGraph(
+                            signupViewModel,
+                            loginViewModel,
+                            rankingViewModel,
+                            mapViewModel,
+                            kuViewModel,
+                            itemViewModel,
+                            navController
+                        ) { visible ->
                             bottomBarVisible = visible
                         }
                     }

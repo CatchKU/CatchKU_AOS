@@ -1,0 +1,31 @@
+apply plugin: 'android-library'
+
+dependencies {
+    implementation fileTree(dir: 'bin', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+    // 유니티 export 했을때 namespace가 정의되어 있지 않음 시발
+    // xrmanifest.androidlib 하위 AndroidManifest.xml의 package name과 맞춰야함
+    namespace = "com.UnityTechnologies.XR.Manifest"
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            //java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileSdkVersion 34
+    buildToolsVersion '32.0.0'
+    defaultConfig {
+        targetSdkVersion 22
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}

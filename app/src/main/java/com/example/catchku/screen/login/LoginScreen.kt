@@ -1,7 +1,10 @@
 package com.example.catchku.screen.login
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,6 +36,8 @@ import androidx.navigation.NavHostController
 import com.example.catchku.Routes
 import com.example.catchku.ui.theme.CatchKUTheme
 import com.example.catchku.util.UiState
+import com.example.catchku.util.showToast
+import com.unity3d.player.UnityPlayerActivity
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
@@ -43,6 +49,7 @@ fun LoginScreen(
     var textId by remember { mutableStateOf("") }
     var textPw by remember { mutableStateOf("") }
     val lifecycleOwner = LocalLifecycleOwner
+    val context = LocalContext.current
     val uiState by loginViewModel.postLoginUserState
         .flowWithLifecycle(
             lifecycle = lifecycleOwner.current.lifecycle,
@@ -50,14 +57,18 @@ fun LoginScreen(
         )
         .collectAsState(initial = UiState.Empty)
 
-    when (uiState) {
+    when (val state = uiState) {
         is UiState.Empty -> Unit
-        is UiState.Failure -> Unit
+        is UiState.Failure -> {
+            context.showToast(message = state.msg)
+        }
         is UiState.Loading -> Unit
         is UiState.Success -> {
             bottomBarVisible(true)
             navController.navigate(Routes.Map.route) {
-                popUpTo(Routes.Home.route)
+                popUpTo(Routes.Home.route) {
+                    inclusive = true
+                }
             }
         }
     }
@@ -119,6 +130,21 @@ fun LoginScreen(
             ) {
                 Text(text = "회원가입")
             }
+//            Button(
+//                modifier = Modifier.padding(10.dp),
+//                onClick = {
+//                    (context as? Activity)?.let {
+//                        it.startActivity(
+//                            Intent(
+//                                /* packageContext = */ it,
+//                                /* cls = */ UnityPlayerActivity::class.java
+//                            )
+//                        )
+//                    }
+//                }
+//            ) {
+//                Text(text = "유니티 테스트 버튼")
+//            }
         }
     }
 }
