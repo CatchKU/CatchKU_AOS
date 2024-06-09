@@ -6,6 +6,7 @@ import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.repository.UserCache
+import com.example.catchku.domain.entity.MarkerLocation
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +34,10 @@ class MapViewModel @Inject constructor(
 
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
+
+    // Marker visibility state
+    private val _isMarkerVisible = MutableStateFlow(true)
+    val isMarkerVisible: StateFlow<Boolean> = _isMarkerVisible.asStateFlow()
 
     fun getUserId() {
         _initUserId.value = userCache.getSaveUserId()
@@ -97,6 +102,14 @@ class MapViewModel @Inject constructor(
             _catchDistanceThreshold.value = value
             delay(8000)
             _catchDistanceThreshold.value = 30f
+        }
+    }
+
+    fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
+        viewModelScope.launch {
+            markerLocation.isVisible.value = false
+            delay(10000)
+            markerLocation.isVisible.value = true
         }
     }
 

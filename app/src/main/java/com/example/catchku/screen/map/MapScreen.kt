@@ -1,6 +1,7 @@
 package com.example.catchku.screen.map
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.location.Location
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,9 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(ExperimentalNaverMapApi::class)
@@ -101,27 +105,35 @@ fun SetMarker(
     mapViewModel: MapViewModel
 ) {
     val context = LocalContext.current
-    Marker(
-        state = MarkerState(
-            position = LatLng(
-                markerLocation.latLng.latitude,
-                markerLocation.latLng.longitude
-            )
-        ),
-        icon = OverlayImage.fromResource(markerLocation.KuId),
-        width = 30.dp,
-        height = 30.dp,
-        onClick = {
-            if (boundary) {
-                mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
-                Toast.makeText(context, "Catch KU!", Toast.LENGTH_SHORT).show()
-                true
-            } else {
-                Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
-                false
+    val activity = context as? Activity
+    val isVisible by markerLocation.isVisible.collectAsState()
+
+    if (isVisible) {
+        Marker(
+            state = MarkerState(
+                position = LatLng(
+                    markerLocation.latLng.latitude,
+                    markerLocation.latLng.longitude
+                )
+            ),
+            icon = OverlayImage.fromResource(markerLocation.KuId),
+            width = 30.dp,
+            height = 30.dp,
+            onClick = {
+                if (boundary) {
+//                    activity?.let { activity ->
+//                        navigateToUnityActivity(activity)
+//                    }
+                    mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
+                    mapViewModel.hideMarkerFor10Seconds(markerLocation)
+                    true
+                } else {
+                    Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
+                    false
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
