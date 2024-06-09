@@ -249,26 +249,115 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
     val userLocation = currLocation
 
     val markerLocations: List<ItemLocation> = listOf(
+
         ItemLocation(
-            LatLng(37.5431505, 127.0751552),
-            R.drawable.img_mapscreen_item1,
+            LatLng(37.5431505 - 0.0002, 127.0751552+0.0001), R.drawable.img_mapscreen_item1,
             "쿠 레이더"
         ), // 행정관
         ItemLocation(
-            LatLng(37.5442615, 127.0760717),
-            R.drawable.img_mapscreen_item2,
+            LatLng(37.5442615 - 0.0002, 127.0760717+0.0001), R.drawable.img_mapscreen_item2,
             "조금 더 길어진 밧줄"
         ), // 경영관
         ItemLocation(
-            LatLng(37.5418772, 127.0782087),
-            R.drawable.img_mapscreen_item1,
+            LatLng(37.5441682 - 0.0002, 127.0753535+0.0001), R.drawable.img_mapscreen_item1,
             "쿠 레이더"
-        ), // 학생회관
+        ), // 상허연구관
         ItemLocation(
-            LatLng(37.5435659, 127.0772119),
-            R.drawable.img_mapscreen_item2,
+            LatLng(37.5439837 - 0.0002, 127.0742108+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 교육과학관
+        ItemLocation(
+            LatLng(37.5428450 - 0.0002, 127.0729332+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ),  // 예술문화관
+        ItemLocation(
+            LatLng(37.5426356 - 0.0002, 127.074649+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ),  // 언어교육원
+        ItemLocation(
+            LatLng(37.5423945 - 0.0002, 127.0756472+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 박물관
+        ItemLocation(
+            LatLng(37.5419017 - 0.0002, 127.0749445+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 법학관
+        ItemLocation(
+            LatLng(37.5419226 - 0.0002, 127.0737408+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 상허기념도서관
+        ItemLocation(
+            LatLng(37.5415596 - 0.0002, 127.0721872+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 의생명과학연구관
+        ItemLocation(
+            LatLng(37.5407426 - 0.0002, 127.0735979+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 생명과학관
+        ItemLocation(
+            LatLng(37.5403664 - 0.0002, 127.0743614+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 동물생명과학관
+        ItemLocation(
+            LatLng(37.5402342 - 0.0002, 127.0735998+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 입학정보관
+        ItemLocation(
+            LatLng(37.5396663 - 0.0002, 127.0732309+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 산학협동관
+        ItemLocation(
+            LatLng(37.5390954 - 0.0002, 127.0747386+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 수의학관
+        ItemLocation(
+            LatLng(37.5435659 - 0.0002, 127.0772119+0.0001), R.drawable.img_mapscreen_item2,
             "조금 더 길어진 밧줄"
         ), // 새천년관
+        ItemLocation(
+            LatLng(37.5434839 - 0.0002, 127.0785437+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 건축관
+        ItemLocation(
+            LatLng(37.5433009 - 0.0002, 127.0782828+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 해봉부동산학과
+        ItemLocation(
+            LatLng(37.5424065 - 0.0002, 127.0786945+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 인문학관
+        ItemLocation(
+            LatLng(37.5418772 - 0.0002, 127.0782087+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 학생회관
+        ItemLocation(
+            LatLng(37.5416350 - 0.0002, 127.0787904+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ),  // 공학관
+        ItemLocation(
+            LatLng(37.5405464 - 0.0002, 127.0794723+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 신공학관
+        ItemLocation(
+            LatLng(37.5414841 - 0.0002, 127.0804325+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 과학관
+        ItemLocation(
+            LatLng(37.5407625 - 0.0002, 127.0793428+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 창의관
+        ItemLocation(
+            LatLng(37.5397343 - 0.0002, 127.0772939+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // KU기술혁신관
+        ItemLocation(
+            LatLng(37.5391834 - 0.0002, 127.0780082+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 쿨하우스
+        ItemLocation(
+            LatLng(37.5404895 - 0.0002, 127.0719454+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 건국대학교병원
     )
 
     // 사용자 반경 내 아이템만 표시
