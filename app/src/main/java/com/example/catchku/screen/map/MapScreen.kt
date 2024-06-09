@@ -117,12 +117,12 @@ fun SetMarker(
         width = 30.dp,
         height = 30.dp,
         onClick = {
-            activity?.let { activity ->
-                navigateToUnityActivity(activity)
-            }
+
             if (boundary) {
+                activity?.let { activity ->
+                    navigateToUnityActivity(activity)
+                }
                 mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
-                Toast.makeText(context, "Catch KU!", Toast.LENGTH_SHORT).show()
                 true
             } else {
                 Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
