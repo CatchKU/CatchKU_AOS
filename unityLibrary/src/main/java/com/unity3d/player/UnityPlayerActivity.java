@@ -1,15 +1,16 @@
 package com.unity3d.player;
 
-import static android.widget.Toast.makeText;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
-import android.widget.Toast;
+import android.view.WindowManager;
+import android.os.Process;
 
 public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecycleEvents
 {
@@ -18,8 +19,7 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
     // Override this in your custom UnityPlayerActivity to tweak the command line arguments passed to the Unity Android Player
     // The command line arguments are passed as a string, separated by spaces
     // UnityPlayerActivity calls this from 'onCreate'
-    // Supported: -force-gles20, -forc
-    // e-gles30, -force-gles31, -force-gles31aep, -force-gles32, -force-gles, -force-vulkan
+    // Supported: -force-gles20, -force-gles30, -force-gles31, -force-gles31aep, -force-gles32, -force-gles, -force-vulkan
     // See https://docs.unity3d.com/Manual/CommandLineArguments.html
     // @param cmdLine the current command line arguments, may be null
     // @return the modified command line string or null
@@ -27,7 +27,6 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
     {
         return cmdLine;
     }
-
 
     // Setup activity layout
     @Override protected void onCreate(Bundle savedInstanceState)
@@ -143,7 +142,6 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
     @Override public boolean onKeyUp(int keyCode, KeyEvent event)     { return mUnityPlayer.onKeyUp(keyCode, event); }
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)   {
         mUnityPlayer.quit();
-        makeText(getApplicationContext(), "Catch KU!",Toast.LENGTH_SHORT).show();
         return mUnityPlayer.onKeyDown(keyCode, event);
     }
     @Override public boolean onTouchEvent(MotionEvent event)          { return mUnityPlayer.onTouchEvent(event); }

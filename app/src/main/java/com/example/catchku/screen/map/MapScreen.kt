@@ -221,7 +221,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         MarkerLocation(LatLng(37.5397343, 127.0772939), R.drawable.ku, "쿠"), // KU기술혁신관
         MarkerLocation(LatLng(37.5391834, 127.0780082), R.drawable.computer_ku, "공대 쿠"), // 쿨하우스
         MarkerLocation(LatLng(37.5404895, 127.0719454), R.drawable.crying_catched_ku, "우는 쿠"), // 건국대학교병원
-        MarkerLocation(LatLng(37.5033466, 127.0476553), R.drawable.computer_ku, "공대 쿠") // 건국대학교병원
+        MarkerLocation(LatLng(37.5037382, 127.0489366), R.drawable.computer_ku, "공대 쿠") // 건국대학교병원
     )
 
     // 사용자 반경 내 쿠만 표시
