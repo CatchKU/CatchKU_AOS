@@ -40,10 +40,6 @@ import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
 import com.unity3d.player.UnityPlayerActivity
 import androidx.compose.runtime.saveable.rememberSaveable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(ExperimentalNaverMapApi::class)
@@ -130,7 +126,7 @@ fun SetMarker(
                         navigateToUnityActivity(activity)
                     }
                     mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
-                    mapViewModel.hideMarkerFor10Seconds(markerLocation)
+//                    mapViewModel.hideMarkerFor10Seconds(markerLocation)
                     true
                 } else {
                     Toast.makeText(context, "It's too far!", Toast.LENGTH_SHORT).show()
@@ -236,10 +232,6 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        val isVisible by location.isVisible.collectAsState()
-        if(!isVisible){
-           delayShow(location)
-        }
         if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold.value) {
             SetMarker(
                 location,
@@ -414,10 +406,4 @@ private fun navigateToUnityActivity(activity: Activity) {
             /* cls = */ UnityPlayerActivity::class.java
         )
     )
-}
- fun delayShow(location : MarkerLocation){
-    CoroutineScope(Dispatchers.Main).launch{
-        delay(10000)
-        location.isVisible.value = true
-    }
 }
