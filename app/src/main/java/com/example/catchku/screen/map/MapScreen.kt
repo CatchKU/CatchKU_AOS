@@ -128,7 +128,7 @@ fun SetMarker(
                     mapViewModel.hideMarkerFor10Seconds(markerLocation)
                     true
                 } else {
-                    Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "It's too far!", Toast.LENGTH_SHORT).show()
                     false
                 }
             }
@@ -160,10 +160,10 @@ fun SetItemMarker(
                     mapViewModel.initUserId.value,
                     itemLocation.itemName
                 )
-                Toast.makeText(context, "아이템 획득!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Acquire Item!", Toast.LENGTH_SHORT).show()
                 true
             } else {
-                Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "It's too far", Toast.LENGTH_SHORT).show()
                 false
             }
         }

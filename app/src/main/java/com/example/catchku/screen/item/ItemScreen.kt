@@ -152,14 +152,14 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
                 )
             )
             Text(
-                text = "남은 개수 : ${itemCount}개",
+                text = "Count : ${itemCount}개",
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 15.sp
                 ),
                 color = Color(0xFFB5B6B7)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "사용하기",
+            Text(text = "Use",
                 modifier = Modifier.clickable {
                     if (itemCount > 0) {
                         itemCount--
