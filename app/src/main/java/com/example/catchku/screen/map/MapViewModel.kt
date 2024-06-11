@@ -117,8 +117,8 @@ class MapViewModel @Inject constructor(
     fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
         viewModelScope.launch {
             markerLocation.isVisible.value = false
-//            delay(10000)
-//            markerLocation.isVisible.value = true
+            delay(10000)
+            markerLocation.isVisible.value = true
         }
     }
 

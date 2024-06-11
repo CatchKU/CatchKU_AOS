@@ -197,7 +197,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
     // 사용자의 현재 위치
     val userLocation = currLocation
 
-    val markerLocation = rememberSaveable {
+    val markerLocation =
         listOf(
             MarkerLocation(LatLng(37.5431505, 127.0751552), R.drawable.ku, "쿠"), // 행정관
             MarkerLocation(LatLng(37.5442615, 127.0760717), R.drawable.computer_ku, "공대 쿠"), // 경영관
@@ -227,7 +227,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
             MarkerLocation(LatLng(37.5391834, 127.0780082), R.drawable.computer_ku, "공대 쿠"), // 쿨하우스
             MarkerLocation(LatLng(37.5404895, 127.0719454), R.drawable.crying_catched_ku, "우는 쿠") // 건국대학교병원
         )
-    }
+
 
     // 사용자 반경 내 쿠만 표시
     markerLocation.forEach { location ->
@@ -236,10 +236,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        val isVisible by location.isVisible.collectAsState()
-        if(!isVisible){
-           delayShow(location)
-        }
+
         if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold.value) {
             SetMarker(
                 location,
