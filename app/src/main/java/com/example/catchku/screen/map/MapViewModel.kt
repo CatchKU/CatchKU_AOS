@@ -1,7 +1,12 @@
 package com.example.catchku.screen.map
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.catchku.R
 import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.response.ResponseDto
@@ -9,6 +14,7 @@ import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.entity.MarkerLocation
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
+import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +25,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val userRepository: UserRepository,
@@ -31,13 +38,15 @@ class MapViewModel @Inject constructor(
     val postUserObtainItemState: StateFlow<UiState<ResponseDto>> =
         _postUserObtainItemState.asStateFlow()
 
-
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
 
     // Marker visibility state
     private val _isMarkerVisible = MutableStateFlow(true)
     val isMarkerVisible: StateFlow<Boolean> = _isMarkerVisible.asStateFlow()
+
+
+
 
     fun getUserId() {
         _initUserId.value = userCache.getSaveUserId()
@@ -108,8 +117,8 @@ class MapViewModel @Inject constructor(
     fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
         viewModelScope.launch {
             markerLocation.isVisible.value = false
-            delay(10000)
-            markerLocation.isVisible.value = true
+//            delay(10000)
+//            markerLocation.isVisible.value = true
         }
     }
 
