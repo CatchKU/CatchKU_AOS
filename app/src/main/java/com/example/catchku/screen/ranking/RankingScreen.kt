@@ -67,7 +67,7 @@ fun RankingScreen(navController: NavHostController, rankingViewModel: RankingVie
     var getDepartments by remember { mutableStateOf<List<Department>>(emptyList()) }
     var getUsers by remember { mutableStateOf<List<UserRanking>>(emptyList()) }
 
-    val tabs = listOf("학과별 랭킹", "사용자별 랭킹")
+    val tabs = listOf("Ranking of Department", "Ranking of User")
     val pagerState = rememberPagerState {
         tabs.size
     }
@@ -329,7 +329,7 @@ fun Rank_List_Card(rank: String, major: String, number: String) {
             modifier = Modifier.weight(1f)
         )
         Text(
-            text = number + " 마리",
+            text = number + " KUs",
             style = TextStyle(
                 fontSize = 16.sp, fontWeight = FontWeight.Bold
             ),

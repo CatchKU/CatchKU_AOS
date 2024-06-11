@@ -119,7 +119,7 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
     var imageResource by remember {
         mutableIntStateOf(R.drawable.img_mapscreen_item1)
     }
-
+    val displayText = if (item.itemName == "쿠 레이더") "KU Telescope" else "A little bit Longer rope"
     var itemCount by remember(item.count) { mutableIntStateOf(item.count) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -144,7 +144,7 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
         )
         Column {
             Text(
-                text = item.itemName,
+                text = displayText,
                 modifier = Modifier.padding(top = 10.dp),
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 30.sp,
@@ -152,7 +152,7 @@ fun ItemCard(item: Item, itemScreenViewModel: ItemScreenViewModel, mapViewModel:
                 )
             )
             Text(
-                text = "Count : ${itemCount}개",
+                text = "Count : ${itemCount}",
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 15.sp
                 ),
