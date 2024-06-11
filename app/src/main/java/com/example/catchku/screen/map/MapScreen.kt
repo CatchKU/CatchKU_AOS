@@ -409,7 +409,7 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
 
  fun delayShow(location : MarkerLocation){
     CoroutineScope(Dispatchers.Main).launch{
-        delay(5000)
+        delay(10000)
         location.isVisible.value = true
     }
 }

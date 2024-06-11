@@ -101,7 +101,7 @@ class MapViewModel @Inject constructor(
     fun updateMaxDistanceThreshold(value: Float) {
         viewModelScope.launch {
             _maxDistanceThreshold.value = value
-            delay(8000)
+            delay(10000)
             _maxDistanceThreshold.value = 150f
         }
     }
@@ -109,7 +109,7 @@ class MapViewModel @Inject constructor(
     fun updateCatchDistanceThreshold(value: Float) {
         viewModelScope.launch {
             _catchDistanceThreshold.value = value
-            delay(8000)
+            delay(10000)
             _catchDistanceThreshold.value = 30f
         }
     }
