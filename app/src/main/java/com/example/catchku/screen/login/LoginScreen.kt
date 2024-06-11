@@ -83,7 +83,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            Text(text = "로그인")
+            Text(text = "Login")
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 value = textId,
@@ -120,7 +120,7 @@ fun LoginScreen(
                     login(textId, textPw)
                 }
             ) {
-                Text(text = "로그인")
+                Text(text = "Login")
             }
             Button(
                 modifier = Modifier.padding(10.dp),
@@ -128,7 +128,7 @@ fun LoginScreen(
                     navController.navigate(Routes.SignUp.route)
                 }
             ) {
-                Text(text = "회원가입")
+                Text(text = "Sign Up")
             }
 //            Button(
 //                modifier = Modifier.padding(10.dp),

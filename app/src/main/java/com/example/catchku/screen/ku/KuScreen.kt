@@ -77,7 +77,7 @@ fun KuScreen(navController: NavHostController, kuViewModel: KuViewModel) {
 
     ) {
         Text(
-            text = "잡은 쿠 리스트",
+            text = "Catched KU List",
             modifier = Modifier.padding(30.dp),
             style = TextStyle(fontSize = 30.sp),
             fontWeight = FontWeight.ExtraBold
@@ -115,10 +115,10 @@ fun LazyGrid_Ku(kuList: List<KuInfo>) {
     ) {
         items(kuList) { ku ->
             when (ku.kuName) {
-                "쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.ku), "쿠"))
-                "공대 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.computer_ku), "공대 쿠"))
-                "다이빙 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.diving_ku), "다이빙 쿠"))
-                "우는 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.crying_catched_ku), "우는 쿠"))
+                "쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.ku), "Normal KU"))
+                "공대 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.computer_ku), "Engineer Ku"))
+                "다이빙 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.diving_ku), "Diving Ku"))
+                "우는 쿠" -> Ku_Card(Ku(painterResource(id = R.drawable.crying_catched_ku), "Crying KU"))
             }
         }
     }
