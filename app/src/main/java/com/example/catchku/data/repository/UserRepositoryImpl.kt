@@ -50,9 +50,9 @@ class UserRepositoryImpl @Inject constructor(
         }
 
     override suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit> =
-       runCatching {
-           userDataSource.postKUCatch(requestKuCatchDto)
-       }
+        runCatching {
+            userDataSource.postKUCatch(requestKuCatchDto)
+        }
 
     override suspend fun getUserLoginId(): Int {
         return userCache.getSaveUserId()
@@ -63,7 +63,7 @@ class UserRepositoryImpl @Inject constructor(
             userDataSource.getUserItemList(userId)
         }
 
-    override suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto):Result<ResponseDto> =
+    override suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto): Result<ResponseDto> =
         runCatching {
             userDataSource.postObtainItem(requestUserObtainItemDto)
         }

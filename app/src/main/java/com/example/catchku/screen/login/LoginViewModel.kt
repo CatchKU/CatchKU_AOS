@@ -2,6 +2,7 @@ package com.example.catchku.screen.login
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -24,10 +25,12 @@ import kotlin.coroutines.coroutineContext
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     @ApplicationContext context: Context,
-): ViewModel() {
+) : ViewModel() {
 
-    private val _postLoginUserState = MutableStateFlow<UiState<ResponseUserLoginDto>>(UiState.Loading)
-    val postLoginUserState: StateFlow<UiState<ResponseUserLoginDto>> = _postLoginUserState.asStateFlow()
+    private val _postLoginUserState =
+        MutableStateFlow<UiState<ResponseUserLoginDto>>(UiState.Loading)
+    val postLoginUserState: StateFlow<UiState<ResponseUserLoginDto>> =
+        _postLoginUserState.asStateFlow()
 
     var userId: Int = -1
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -44,7 +47,7 @@ class LoginViewModel @Inject constructor(
                 Timber.e("성공 $response")
                 userId = response.data.id
             }.onFailure { t ->
-                Log.e("ABCD", "ViewModel F로그인 실패: $t")
+                Log.e("ABCD", "ViewModel 로그인 실패: ${t.message!!}")
                 if (t is HttpException) {
                     val errorResponse = t.response()?.errorBody()?.string()
                     Timber.e("HTTP 실패: $errorResponse")

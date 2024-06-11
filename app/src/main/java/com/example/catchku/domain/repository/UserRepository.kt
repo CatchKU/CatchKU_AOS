@@ -24,9 +24,10 @@ interface UserRepository {
 
     suspend fun getUserItemList(userId: Int): Result<ResponseUserItemListDto>
 
-    suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto) : Result<ResponseDto>
+    suspend fun postObtainItem(requestUserObtainItemDto: RequestUserObtainItemDto): Result<ResponseDto>
 
-    suspend fun deleteUseItem(requestUserUseItemDto: RequestUserUseItemDto) : Result<Unit>
+    suspend fun deleteUseItem(requestUserUseItemDto: RequestUserUseItemDto): Result<Unit>
+
     suspend fun postKuCatch(requestKuCatchDto: RequestKuCatchDto): Result<Unit>
 
     suspend fun postLoginUser(requestUserLoginDto: RequestUserLoginDto): Result<ResponseUserLoginDto>

@@ -1,11 +1,8 @@
 package com.example.catchku.screen.ku
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catchku.data.model.response.KuListInfo
 import com.example.catchku.data.model.response.ResponseKuListDto
-import com.example.catchku.data.model.response.ResponseTopFiveDepartmentDto
 import com.example.catchku.data.repository.UserCache
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
@@ -24,7 +21,7 @@ class KuViewModel @Inject constructor(
     private val userCache: UserCache
 ) : ViewModel() {
 
-    private val _getKuList=
+    private val _getKuList =
         MutableStateFlow<UiState<ResponseKuListDto>>(UiState.Loading)
     val getKuList: StateFlow<UiState<ResponseKuListDto>> = _getKuList.asStateFlow()
 
@@ -35,7 +32,7 @@ class KuViewModel @Inject constructor(
         _initUserId.value = userCache.getSaveUserId()
     }
 
-    fun getKuList(userId : Int) {
+    fun getKuList(userId: Int) {
         viewModelScope.launch {
             userRepository.getKuList(userId)
                 .onSuccess { response ->

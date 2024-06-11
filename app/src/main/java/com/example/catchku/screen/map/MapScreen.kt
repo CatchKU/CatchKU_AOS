@@ -1,11 +1,13 @@
 package com.example.catchku.screen.map
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.location.Location
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +36,9 @@ import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.compose.rememberFusedLocationSource
 import com.naver.maps.map.overlay.OverlayImage
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+
 
 @SuppressLint("FlowOperatorInvokedInComposition")
 @OptIn(ExperimentalNaverMapApi::class)
@@ -49,6 +54,17 @@ fun MapScreen(navController: NavHostController, mapViewModel: MapViewModel) {
         .collectAsState(initial = UiState.Empty)
 
     mapViewModel.getUserId()
+
+    @Composable
+    fun observeStateChanges(mapViewModel: MapViewModel) {
+        val maxDistanceThreshold by mapViewModel.maxDistanceThreshold.collectAsState()
+        val catchDistanceThreshold by mapViewModel.catchDistanceThreshold.collectAsState()
+        LaunchedEffect(maxDistanceThreshold, catchDistanceThreshold) {
+            // Handle any side effects or UI updates here
+        }
+        // Use these values to update your UI as needed
+    }
+    observeStateChanges(mapViewModel)
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -74,13 +90,12 @@ fun MapScreen(navController: NavHostController, mapViewModel: MapViewModel) {
         ) {
             markerState.value?.let {
                 DrawKuMarker(currLocation = it, mapViewModel)
-                DrawUserMarker(currLocation = it)
+                DrawUserMarker(currLocation = it, mapViewModel)
                 DrawItemMarker(currLocation = it, mapViewModel)
             }
         }
     }
 }
-
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
@@ -90,29 +105,35 @@ fun SetMarker(
     mapViewModel: MapViewModel
 ) {
     val context = LocalContext.current
-    Marker(
-        state = MarkerState(
-            position = LatLng(
-                markerLocation.latLng.latitude,
-                markerLocation.latLng.longitude
-            )
-        ),
-        icon = OverlayImage.fromResource(markerLocation.KuId),
-        width = 30.dp,
-        height = 30.dp,
-        onClick = {
+    val activity = context as? Activity
+    val isVisible by markerLocation.isVisible.collectAsState()
 
-            if(boundary){
-                mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
-                Toast.makeText(context, "Catch KU!", Toast.LENGTH_SHORT).show()
-                true
-            } else {
-                Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
-                false
+    if (isVisible) {
+        Marker(
+            state = MarkerState(
+                position = LatLng(
+                    markerLocation.latLng.latitude,
+                    markerLocation.latLng.longitude
+                )
+            ),
+            icon = OverlayImage.fromResource(markerLocation.KuId),
+            width = 30.dp,
+            height = 30.dp,
+            onClick = {
+                if (boundary) {
+//                    activity?.let { activity ->
+//                        navigateToUnityActivity(activity)
+//                    }
+                    mapViewModel.postKuCatch(mapViewModel.initUserId.value, markerLocation.kuName)
+                    mapViewModel.hideMarkerFor10Seconds(markerLocation)
+                    true
+                } else {
+                    Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
+                    false
+                }
             }
-        }
-    )
-
+        )
+    }
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -135,7 +156,11 @@ fun SetItemMarker(
         height = 30.dp,
         onClick = {
             if (boundary) {
-                mapViewModel.postUserObtainItem(mapViewModel.initUserId.value, itemLocation.itemName)
+                mapViewModel.postUserObtainItem(
+                    mapViewModel.initUserId.value,
+                    itemLocation.itemName
+                )
+                Toast.makeText(context, "아이템 획득!", Toast.LENGTH_SHORT).show()
                 true
             } else {
                 Toast.makeText(context, "너무 멀어요", Toast.LENGTH_SHORT).show()
@@ -143,27 +168,25 @@ fun SetItemMarker(
             }
         }
     )
-
 }
 
-
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun DrawUserMarker(currLocation: LatLng) {
+fun DrawUserMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
 
     // 사용자의 현재 위치
     CircleOverlay(
         center = LatLng(currLocation.latitude, currLocation.longitude),
         Color.Red.copy(alpha = 0.3F),
-        150.0
+        mapViewModel.maxDistanceThreshold.value.toDouble()
     )
 
     CircleOverlay(
         center = LatLng(currLocation.latitude, currLocation.longitude),
         color = Color(0xFFCF4A4A),
-        50.0
+        mapViewModel.catchDistanceThreshold.value.toDouble()
     )
 }
-
 
 @Composable
 fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
@@ -172,7 +195,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
 
     val markerLocations: List<MarkerLocation> = listOf(
         MarkerLocation(LatLng(37.5431505, 127.0751552), R.drawable.ku, "쿠"), // 행정관
-        MarkerLocation(LatLng(37.5442615, 127.0760717), R.drawable.computer_ku, "컴공 쿠"), // 경영관
+        MarkerLocation(LatLng(37.5442615, 127.0760717), R.drawable.computer_ku, "공대 쿠"), // 경영관
         MarkerLocation(
             LatLng(37.5441682, 127.0753535),
             R.drawable.crying_catched_ku,
@@ -180,7 +203,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 상허연구관
         MarkerLocation(LatLng(37.5439837, 127.0742108), R.drawable.diving_ku, "다이빙 쿠"), // 교육과학관
         MarkerLocation(LatLng(37.542845, 127.0729332), R.drawable.ku, "쿠"),  // 예술문화관
-        MarkerLocation(LatLng(37.5426356, 127.074649), R.drawable.computer_ku, "컴공 쿠"),  // 언어교육원
+        MarkerLocation(LatLng(37.5426356, 127.074649), R.drawable.computer_ku, "공대 쿠"),  // 언어교육원
         MarkerLocation(
             LatLng(37.5423945, 127.0756472),
             R.drawable.crying_catched_ku,
@@ -188,7 +211,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 박물관
         MarkerLocation(LatLng(37.5419017, 127.0749445), R.drawable.diving_ku, "다이빙 쿠"), // 법학관
         MarkerLocation(LatLng(37.5419226, 127.0737408), R.drawable.ku, "쿠"), // 상허기념도서관
-        MarkerLocation(LatLng(37.5415596, 127.0721872), R.drawable.computer_ku, "컴공 쿠"), // 의생명과학연구관
+        MarkerLocation(LatLng(37.5415596, 127.0721872), R.drawable.computer_ku, "공대 쿠"), // 의생명과학연구관
         MarkerLocation(
             LatLng(37.5407426, 127.0735979),
             R.drawable.crying_catched_ku,
@@ -196,7 +219,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 생명과학관
         MarkerLocation(LatLng(37.5403664, 127.0743614), R.drawable.diving_ku, "다이빙 쿠"), // 동물생명과학관
         MarkerLocation(LatLng(37.5402342, 127.0735998), R.drawable.ku, "쿠"), // 입학정보관
-        MarkerLocation(LatLng(37.5396663, 127.0732309), R.drawable.computer_ku, "컴공 쿠"), // 산학협동관
+        MarkerLocation(LatLng(37.5396663, 127.0732309), R.drawable.computer_ku, "공대 쿠"), // 산학협동관
         MarkerLocation(
             LatLng(37.5390954, 127.0747386),
             R.drawable.crying_catched_ku,
@@ -204,7 +227,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 수의학관
         MarkerLocation(LatLng(37.5435659, 127.0772119), R.drawable.diving_ku, "다이빙 쿠"), // 새천년관
         MarkerLocation(LatLng(37.5434839, 127.0785437), R.drawable.ku, "쿠"), // 건축관
-        MarkerLocation(LatLng(37.5433009, 127.0782828), R.drawable.computer_ku, "컴공 쿠"), // 해봉부동산학과
+        MarkerLocation(LatLng(37.5433009, 127.0782828), R.drawable.computer_ku, "공대 쿠"), // 해봉부동산학과
         MarkerLocation(
             LatLng(37.5424065, 127.0786945),
             R.drawable.crying_catched_ku,
@@ -212,7 +235,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 인문학관
         MarkerLocation(LatLng(37.5418772, 127.0782087), R.drawable.diving_ku, "다이빙 쿠"), // 학생회관
         MarkerLocation(LatLng(37.541635, 127.0787904), R.drawable.ku, "쿠"),  // 공학관
-        MarkerLocation(LatLng(37.5405464, 127.0794723), R.drawable.computer_ku, "컴공 쿠"), // 신공학관
+        MarkerLocation(LatLng(37.5405464, 127.0794723), R.drawable.computer_ku, "공대 쿠"), // 신공학관
         MarkerLocation(
             LatLng(37.5414841, 127.0804325),
             R.drawable.crying_catched_ku,
@@ -220,7 +243,7 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
         ), // 과학관
         MarkerLocation(LatLng(37.5407625, 127.0793428), R.drawable.diving_ku, "다이빙 쿠"), // 창의관
         MarkerLocation(LatLng(37.5397343, 127.0772939), R.drawable.ku, "쿠"), // KU기술혁신관
-        MarkerLocation(LatLng(37.5391834, 127.0780082), R.drawable.computer_ku, "컴공 쿠"), // 쿨하우스
+        MarkerLocation(LatLng(37.5391834, 127.0780082), R.drawable.computer_ku, "공대 쿠"), // 쿨하우스
         MarkerLocation(
             LatLng(37.5404895, 127.0719454),
             R.drawable.crying_catched_ku,
@@ -235,13 +258,13 @@ fun DrawKuMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        if (distance <= MAX_DISTANCE_THRESHOLD && distance > CATCH__DISTANCE_THRESHOLD) {
+        if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold.value) {
             SetMarker(
                 location,
                 boundary = false,
                 mapViewModel
             )
-        } else if (distance > 0 && distance <= CATCH__DISTANCE_THRESHOLD) {
+        } else if (distance > 0 && distance <= mapViewModel.catchDistanceThreshold.value) {
             SetMarker(
                 location,
                 boundary = true,
@@ -257,10 +280,115 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
     val userLocation = currLocation
 
     val markerLocations: List<ItemLocation> = listOf(
-        ItemLocation(LatLng(37.5431505, 127.0751552), R.drawable.img_mapscreen_item1, "쌍안경"), // 행정관
-        ItemLocation(LatLng(37.5442615, 127.0760717), R.drawable.img_mapscreen_item2, "로봇팔"), // 경영관
-        ItemLocation(LatLng(37.5418772, 127.0782087), R.drawable.img_mapscreen_item1, "쌍안경"), // 학생회관
-        ItemLocation(LatLng(37.5435659, 127.0772119), R.drawable.img_mapscreen_item2, "로봇팔"), // 새천년관
+
+        ItemLocation(
+            LatLng(37.5431505 - 0.0002, 127.0751552+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 행정관
+        ItemLocation(
+            LatLng(37.5442615 - 0.0002, 127.0760717+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 경영관
+        ItemLocation(
+            LatLng(37.5441682 - 0.0002, 127.0753535+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 상허연구관
+        ItemLocation(
+            LatLng(37.5439837 - 0.0002, 127.0742108+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 교육과학관
+        ItemLocation(
+            LatLng(37.5428450 - 0.0002, 127.0729332+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ),  // 예술문화관
+        ItemLocation(
+            LatLng(37.5426356 - 0.0002, 127.074649+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ),  // 언어교육원
+        ItemLocation(
+            LatLng(37.5423945 - 0.0002, 127.0756472+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 박물관
+        ItemLocation(
+            LatLng(37.5419017 - 0.0002, 127.0749445+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 법학관
+        ItemLocation(
+            LatLng(37.5419226 - 0.0002, 127.0737408+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 상허기념도서관
+        ItemLocation(
+            LatLng(37.5415596 - 0.0002, 127.0721872+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 의생명과학연구관
+        ItemLocation(
+            LatLng(37.5407426 - 0.0002, 127.0735979+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 생명과학관
+        ItemLocation(
+            LatLng(37.5403664 - 0.0002, 127.0743614+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 동물생명과학관
+        ItemLocation(
+            LatLng(37.5402342 - 0.0002, 127.0735998+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 입학정보관
+        ItemLocation(
+            LatLng(37.5396663 - 0.0002, 127.0732309+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 산학협동관
+        ItemLocation(
+            LatLng(37.5390954 - 0.0002, 127.0747386+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 수의학관
+        ItemLocation(
+            LatLng(37.5435659 - 0.0002, 127.0772119+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 새천년관
+        ItemLocation(
+            LatLng(37.5434839 - 0.0002, 127.0785437+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 건축관
+        ItemLocation(
+            LatLng(37.5433009 - 0.0002, 127.0782828+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 해봉부동산학과
+        ItemLocation(
+            LatLng(37.5424065 - 0.0002, 127.0786945+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 인문학관
+        ItemLocation(
+            LatLng(37.5418772 - 0.0002, 127.0782087+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 학생회관
+        ItemLocation(
+            LatLng(37.5416350 - 0.0002, 127.0787904+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ),  // 공학관
+        ItemLocation(
+            LatLng(37.5405464 - 0.0002, 127.0794723+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 신공학관
+        ItemLocation(
+            LatLng(37.5414841 - 0.0002, 127.0804325+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 과학관
+        ItemLocation(
+            LatLng(37.5407625 - 0.0002, 127.0793428+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 창의관
+        ItemLocation(
+            LatLng(37.5397343 - 0.0002, 127.0772939+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // KU기술혁신관
+        ItemLocation(
+            LatLng(37.5391834 - 0.0002, 127.0780082+0.0001), R.drawable.img_mapscreen_item2,
+            "조금 더 길어진 밧줄"
+        ), // 쿨하우스
+        ItemLocation(
+            LatLng(37.5404895 - 0.0002, 127.0719454+0.0001), R.drawable.img_mapscreen_item1,
+            "쿠 레이더"
+        ), // 건국대학교병원
     )
 
     // 사용자 반경 내 아이템만 표시
@@ -270,13 +398,13 @@ fun DrawItemMarker(currLocation: LatLng, mapViewModel: MapViewModel) {
                 location.latLng,
                 userLocation
             )
-        if (distance <= MAX_DISTANCE_THRESHOLD && distance > CATCH__DISTANCE_THRESHOLD) {
+        if (distance <= mapViewModel.maxDistanceThreshold.value && distance > mapViewModel.catchDistanceThreshold.value) {
             SetItemMarker(
                 location,
                 boundary = false,
                 mapViewModel
             )
-        } else if (distance > 0 && distance <= CATCH__DISTANCE_THRESHOLD) {
+        } else if (distance > 0 && distance <= mapViewModel.catchDistanceThreshold.value) {
             SetItemMarker(
                 location,
                 boundary = true,
@@ -298,6 +426,4 @@ fun calculateDistance(location1: LatLng, location2: LatLng): Float {
 }
 
 
-private const val MAX_DISTANCE_THRESHOLD = 150f // 사용자 반경
-private const val CATCH__DISTANCE_THRESHOLD = 50f // 잡을수 있는 범위 반경
 

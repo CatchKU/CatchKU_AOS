@@ -6,9 +6,11 @@ import com.example.catchku.data.model.request.RequestKuCatchDto
 import com.example.catchku.data.model.request.RequestUserObtainItemDto
 import com.example.catchku.data.model.response.ResponseDto
 import com.example.catchku.data.repository.UserCache
+import com.example.catchku.domain.entity.MarkerLocation
 import com.example.catchku.domain.repository.UserRepository
 import com.example.catchku.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,30 +23,33 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCache: UserCache,
-): ViewModel() {
+) : ViewModel() {
     private val _postKuCatchState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val postKuCatchState: StateFlow<UiState<Unit>> = _postKuCatchState.asStateFlow()
 
-
     private val _postUserObtainItemState = MutableStateFlow<UiState<ResponseDto>>(UiState.Loading)
-    val postUserObtainItemState: StateFlow<UiState<ResponseDto>> = _postUserObtainItemState.asStateFlow()
+    val postUserObtainItemState: StateFlow<UiState<ResponseDto>> =
+        _postUserObtainItemState.asStateFlow()
 
 
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
 
+    // Marker visibility state
+    private val _isMarkerVisible = MutableStateFlow(true)
+    val isMarkerVisible: StateFlow<Boolean> = _isMarkerVisible.asStateFlow()
+
     fun getUserId() {
         _initUserId.value = userCache.getSaveUserId()
     }
 
-
     fun postKuCatch(userId: Int, kuName: String) {
         viewModelScope.launch {
             userRepository.postKuCatch(
-               RequestKuCatchDto(
-                   userId,
-                   kuName
-               )
+                RequestKuCatchDto(
+                    userId,
+                    kuName
+                )
             ).onSuccess { response ->
                 _postKuCatchState.value = UiState.Success(response)
                 Timber.e("성공 $response")
@@ -75,6 +80,36 @@ class MapViewModel @Inject constructor(
                 }
                 _postUserObtainItemState.value = UiState.Failure("${t.message}")
             }
+        }
+    }
+
+    private val _maxDistanceThreshold = MutableStateFlow(150f)
+    val maxDistanceThreshold: StateFlow<Float> = _maxDistanceThreshold
+
+    private val _catchDistanceThreshold = MutableStateFlow(30f)
+    val catchDistanceThreshold: StateFlow<Float> = _catchDistanceThreshold
+
+    fun updateMaxDistanceThreshold(value: Float) {
+        viewModelScope.launch {
+            _maxDistanceThreshold.value = value
+            delay(8000)
+            _maxDistanceThreshold.value = 150f
+        }
+    }
+
+    fun updateCatchDistanceThreshold(value: Float) {
+        viewModelScope.launch {
+            _catchDistanceThreshold.value = value
+            delay(8000)
+            _catchDistanceThreshold.value = 30f
+        }
+    }
+
+    fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
+        viewModelScope.launch {
+            markerLocation.isVisible.value = false
+            delay(10000)
+            markerLocation.isVisible.value = true
         }
     }
 
