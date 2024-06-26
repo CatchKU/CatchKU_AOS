@@ -61,7 +61,7 @@ fun SignupScreen(
                     textDepartmentName
                 )
             )
-            Toast.makeText(context, "회원가입 성공", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
             navController.navigate(Routes.Login.route)
         }
     }
@@ -72,7 +72,7 @@ fun SignupScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            Text(text = "회원가입")
+            Text(text = "Sign Up")
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 value = textStudentEmail,
@@ -80,7 +80,7 @@ fun SignupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                label = { Text("이메일") },
+                label = { Text("e-mail") },
                 placeholder = { Text("") },
                 singleLine = true,
             )
@@ -91,7 +91,7 @@ fun SignupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                label = { Text("이름을 입력해주세요") },
+                label = { Text("name") },
                 placeholder = { Text("") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -103,7 +103,7 @@ fun SignupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                label = { Text("비밀번호") },
+                label = { Text("password") },
                 placeholder = { Text("") },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
@@ -120,7 +120,7 @@ fun SignupScreen(
                     signUp(textStudentEmail, textName, textPassword, textDepartmentName)
                 }
             ) {
-                Text(text = "회원가입 하기")
+                Text(text = "Sign up")
             }
         }
     }

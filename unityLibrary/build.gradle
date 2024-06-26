@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation(name: 'arcore_client', ext:'aar')
@@ -8,11 +9,10 @@ dependencies {
     implementation(name: 'unityandroidpermissions', ext:'aar')
     implementation project('xrmanifest.androidlib')
     implementation libs.inputmapping
-
 }
 
 android {
-    // 유니티 export 했을때 namespace가 정의되어 있지 않음 시발
+    // 유니티 export 했을때 namespace가 정의되어 있지 않음
     // unityLibrary src 하위 AndroidManifest.xml의 package name과 맞춰야함
     namespace = "com.unity3d.player"
     ndkPath "C:/Users/s_kelsey6225/Desktop/2022.3.29f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
@@ -32,7 +32,7 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
         versionCode 1
-        versionName '1.0.0'
+        versionName '1.0'
         consumerProguardFiles 'proguard-unity.txt'
     }
 

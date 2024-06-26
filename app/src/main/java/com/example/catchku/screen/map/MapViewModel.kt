@@ -35,6 +35,10 @@ class MapViewModel @Inject constructor(
     private val _initUserId = MutableStateFlow<Int>(-12)
     val initUserId: StateFlow<Int> = _initUserId.asStateFlow()
 
+    // Marker visibility state
+    private val _isMarkerVisible = MutableStateFlow(true)
+    val isMarkerVisible: StateFlow<Boolean> = _isMarkerVisible.asStateFlow()
+
     fun getUserId() {
         _initUserId.value = userCache.getSaveUserId()
     }
@@ -88,7 +92,7 @@ class MapViewModel @Inject constructor(
     fun updateMaxDistanceThreshold(value: Float) {
         viewModelScope.launch {
             _maxDistanceThreshold.value = value
-            delay(8000)
+            delay(10000)
             _maxDistanceThreshold.value = 150f
         }
     }
@@ -96,18 +100,8 @@ class MapViewModel @Inject constructor(
     fun updateCatchDistanceThreshold(value: Float) {
         viewModelScope.launch {
             _catchDistanceThreshold.value = value
-            delay(8000)
+            delay(10000)
             _catchDistanceThreshold.value = 30f
         }
     }
-
-    // Function to hide a specific marker for 10 seconds
-    fun hideMarkerFor10Seconds(markerLocation: MarkerLocation) {
-        viewModelScope.launch {
-            markerLocation.isVisible.value = false
-            delay(10000)
-            markerLocation.isVisible.value = true
-        }
-    }
-
 }

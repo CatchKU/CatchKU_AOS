@@ -48,7 +48,7 @@ fun HomeScreen(navController: NavHostController) {
                     },
                     colors = ButtonDefaults.buttonColors(Color(0xFF1F855A))
                 ) {
-                    Text(text = "게임시작")
+                    Text(text = "Game Start!")
                 }
             }
         }
